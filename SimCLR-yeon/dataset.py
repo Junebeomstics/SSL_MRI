@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 import torch
 import os
+from PIL import Image
 from torchvision.transforms import transforms
 from data_aug.gaussian_blur import GaussianBlur
 import nibabel as nib
@@ -73,6 +74,7 @@ class MRIDataset(Dataset):
                                               GaussianBlur(kernel_size=int(0.1 * size)),
                                               transforms.ToTensor()])
     ######################################################################    
+        self.data = Image.fromarray(self.data)
         x1 = self.data_transforms(self.data)
         x2 = self.data_transforms(self.data)
         labels = self.labels[self.config.label_name].values[idx]
