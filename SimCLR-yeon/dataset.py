@@ -58,8 +58,8 @@ class MRIDataset(Dataset):
         # For a single input x, samples (t, t') ~ T to generate (t(x), t'(x))
         file = self.files[idx]
         path = os.path.join(self.data_dir, file)
-        self.data = nib.load(os.path.join(path,'brain_to_MNI_nonlin.nii.gz')).get_data() #(Assume) self.warped == True
-        self.data = np.array(self.data,1,2)        
+        self.data = nib.load(os.path.join(path,'brain_to_MNI_nonlin.nii.gz')).get_data() #(Assume) self.warped == True #returns array of the image data
+        self.data = self.data.reshape(91,109*91)      
         ######################################################################   
      # follow the transform type used in SimCLR    
         """Return a set of data augmentation transformations as described in the SimCLR paper."""
