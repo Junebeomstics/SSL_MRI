@@ -1,9 +1,9 @@
 # SSL_MRI
 
-권준범, 류명훈, 장원영, 채연 
+Team members: 권준범, 류명훈, 장원영, 채연 
 
 ## Introduction
-----
+
 This repository is for Team project of 'Meta learning' class.
 The main focus of our project is to observe the applicability of self-supervised learning to MRI images to predict clinical outcomes.
 
