@@ -23,8 +23,8 @@ class Config:
             self.sigma = 5 # depends on the meta-data at hand
             self.temperature = 0.1
             self.tf = "all_tf"
-            self.model = "DenseNet"
-
+            self.model = "UNet"
+            self.num_classes = 2
 
             # Paths to the data
             self.data_train = '/home/yeon/anaconda3/envs/2022class/meta-learn/yAwareContrastiveLearning/data/train'#"/path/to/your/training/data.npy"
