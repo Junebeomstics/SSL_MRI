@@ -10,7 +10,7 @@ class Config:
         self.mode = mode
         self.input_size = (91,109,91)
         if self.mode == PRETRAINING:
-            self.batch_size = 64
+            self.batch_size = 8
             self.nb_epochs_per_saving = 1
             self.pin_mem = True
             self.num_cpu_workers = 8
