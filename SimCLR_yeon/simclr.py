@@ -13,7 +13,7 @@ torch.manual_seed(0)
 
 class SimCLR(object):
 
-    def __init__(self, loss, model, config, loader_train, loader_val, optimizer, scheduler, batch_size = 256, n_views = 2, temperature = 0.07):
+    def __init__(self, loss, model, config, loader_train, loader_val, optimizer, scheduler, batch_size = 4, n_views = 2, temperature = 0.07):
         self.device = torch.device("cuda")
         self.loss = loss
         self.model = model.to(self.device)
@@ -41,24 +41,41 @@ class SimCLR(object):
         similarity_matrix = torch.matmul(features, features.T)
         # assert similarity_matrix.shape == (
         #     self.args.n_views * self.args.batch_size, self.args.n_views * self.args.batch_size)
-        # assert similarity_matrix.shape == labels.shape
+        if similarity_matrix.shape == labels.shape:
 
-        # discard the main diagonal from both: labels and similarities matrix
-        mask = torch.eye(labels.shape[0], dtype=torch.bool).to(self.device)
-        labels = labels[~mask].view(labels.shape[0], -1)
-        similarity_matrix = similarity_matrix[~mask].view(similarity_matrix.shape[0], -1)
-        # assert similarity_matrix.shape == labels.shape
-
-        # select and combine multiple positives
-        positives = similarity_matrix[labels.bool()].view(labels.shape[0], -1)
-
-        # select only the negatives the negatives
-        negatives = similarity_matrix[~labels.bool()].view(similarity_matrix.shape[0], -1)
-
-        logits = torch.cat([positives, negatives], dim=1)
-        labels = torch.zeros(logits.shape[0], dtype=torch.long).to(self.device)
-
-        logits = logits / self.temperature
+            # discard the main diagonal from both: labels and similarities matrix
+            mask = torch.eye(labels.shape[0], dtype=torch.bool).to(self.device)
+            labels = labels[~mask].view(labels.shape[0], -1)
+            similarity_matrix = similarity_matrix[~mask].view(similarity_matrix.shape[0], -1)
+            # assert similarity_matrix.shape == labels.shape
+    
+            # select and combine multiple positives
+            positives = similarity_matrix[labels.bool()].view(labels.shape[0], -1)
+    
+            # select only the negatives the negatives
+            negatives = similarity_matrix[~labels.bool()].view(similarity_matrix.shape[0], -1)
+    
+            logits = torch.cat([positives, negatives], dim=1)
+            labels = torch.zeros(logits.shape[0], dtype=torch.long).to(self.device)
+    
+            logits = logits / self.temperature
+        else:
+            # discard the main diagonal from both: labels and similarities matrix
+            mask = torch.eye(labels.shape[0], dtype=torch.bool).to(self.device)
+            labels = labels[~mask].view(labels.shape[0], -1)
+            similarity_matrix = similarity_matrix[~mask].view(similarity_matrix.shape[0], -1)
+            # assert similarity_matrix.shape == labels.shape
+    
+            # select and combine multiple positives
+            positives = similarity_matrix[labels.bool()].view(labels.shape[0], -1)
+    
+            # select only the negatives the negatives
+            negatives = similarity_matrix[~labels.bool()].view(similarity_matrix.shape[0], -1)
+    
+            logits = torch.cat([positives, negatives], dim=1)
+            labels = torch.zeros(logits.shape[0], dtype=torch.long).to(self.device)
+    
+            logits = logits / self.temperature
         return logits, labels
 
     def train(self, train_loader):
@@ -78,8 +95,9 @@ class SimCLR(object):
                 pbar.update()
                 images = images.to(self.device)
                 self.optimizer.zero_grad()
-                
-                images = self.model(images[:, 0, :])
+                images = images[:,0,:]
+                images = images[:, None,:,:]
+                images = self.model(images)
                 
                 logits, labels = self.info_nce_loss(images)
                 loss = self.criterion(logits, labels)
@@ -104,10 +122,12 @@ class SimCLR(object):
             val_values = {}
             with torch.no_grad():
                 self.model.eval()
-                for (inputs, labels) in self.loader_val:
+                for (inputs, _) in self.loader_val:
                     pbar.update()
                     inputs = inputs.to(self.device)
-                    images = self.model(inputs[:, 0, :])
+                    inputs = inputs[:,0, :]
+                    inputs = inputs[:, None,:,:]
+                    images = self.model(inputs)
                     logits, labels = self.info_nce_loss(images)
                     loss = self.criterion(logits, labels)
                     self.optimizer.zero_grad()
@@ -126,6 +146,8 @@ class SimCLR(object):
                 self.scheduler.step()
 
             if (epoch_counter % self.config.nb_epochs_per_saving == 0 or epoch_counter == self.config.nb_epochs - 1) and epoch_counter > 0:
+                pass
+            if epoch_counter==99:
                 torch.save({
                     "epoch": epoch_counter,
                     "model": self.model.state_dict(),
