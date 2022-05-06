@@ -23,6 +23,7 @@ ADNI 데이터셋에 맞춘 fine-tuning code를 추가했습니다.
 - `dataset.py`를 ADNI 데이터에 맞게 수정했습니다.
 - `datasplit.py`는 `fsdat_baseline.csv` 파일을 train, valid, test로 나누기 위해 새로 추가한 파일입니다.
 - 논문 실험 세팅에 맞춰 우선 `N_train = 100 or 500`을 상정하고 `.csv` 파일을 생성했습니다.
+- 우선 valid 데이터셋을 이용한 hyper-parameter tuning은 고려하지 않고 test 데이터셋 사이즈를 설정했습니다. (`N_train = 100`의 경우 `len(test) = 1703`, `N_train = 500`의 경우 `len(test) = 1303`)
 - `N_train = 100 or 500`은 `main.py`를 실행할 때 python argument로 추가하도록 설정했습니다.
 - `.csv` 파일은 편의상 `csv` 폴더에 정리했습니다.
 - `yAwareContrastiveLearning.py` 내에 test 데이터셋을 처리하는 코드를 추가했습니다.
