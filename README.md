@@ -27,7 +27,7 @@ ADNI 데이터셋에 맞춘 fine-tuning code를 추가했습니다.
 - `.csv` 파일은 편의상 `csv` 폴더에 정리했습니다.
 - `yAwareContrastiveLearning.py` 내에 test 데이터셋을 처리하는 코드를 추가했습니다.
 - 코드를 재현하려면 [여기](https://drive.google.com/file/d/1e75JYkaXvLQJhn0Km99iVTzB28AvErh5/view)에서 pretrained 모델을 다운 받으세요.
-- `.sh` 파일은 편의상 `bash` 폴더에 정리했습니다.
+- `.sh` 파일은 편의상 `shell` 폴더에 정리했습니다.
 
 코드 실행 예시는 아래와 같습니다.
 ```bash
