@@ -2,26 +2,36 @@ from torch.utils.data import Dataset
 import numpy as np
 import pandas as pd
 import torch
-from augmentations import Transformer, Crop, Cutout, Noise, Normalize, Blur, Flip
-### ADNI
 import os
+from PIL import Image
+from augmentations import Transformer, Crop, Cutout, Noise, Normalize, Blur, Flip
+from data_aug.gaussian_blur import GaussianBlur
 import nibabel as nib
-from skimage.transform import resize
+#from augmentations import Transformer, Crop, Cutout, Noise, Normalize, Blur, Flip
+
+class ContrastiveLearningViewGenerator(object):
+    """Take two random crops of one image as the query and key."""
+
+    def __init__(self, base_transform, n_views=2):
+        self.base_transform = base_transform
+        self.n_views = n_views
+
+    def __call__(self, x):
+        return [self.base_transform(x) for i in range(self.n_views)]
 
 class MRIDataset(Dataset):
-
-    def __init__(self, config, task_name, task_target_num, stratify, training=False, validation=False, test=False, *args, **kwargs):
+    #change > Class from the root_folder
+    def __init__(self, config, mode = 'train', subject_file = './data/fsdat_baseline.csv', data_dir = './data', training=False, validation=False, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        if training:
-            assert training != validation
-            assert training != test
-        elif validation:
-            assert training != validation
-            assert validation != test
-        else:
-            assert test != validation
-            assert training != test
+        self.data_dir = data_dir
+        self.train_subject_folder = os.path.join(self.data_dir, 'fsdat_baseline_train.csv')
+        self.val_subject_folder = os.path.join(self.data_dir, 'fsdat_baseline_val.csv')
+        self.subject_file = subject_file
+        self.mode = mode
 
+        
+        assert training != validation
+        
         self.transforms = Transformer()
         self.config = config
         self.transforms.register(Normalize(), probability=1.0)
@@ -40,30 +50,36 @@ class MRIDataset(Dataset):
         elif config.tf == "crop":
             self.transforms.register(Crop(np.ceil(0.75*np.array(config.input_size)), "random", resize=True),
                                      probability=1)
+
+        #self.transforms = Transformer()
+        self.n_views = 2 #assert args.n_views == 2, "Only two view training is supported. Please use --n-views 2."
         
-        ### ADNI
-        if task_target_num == 0: # Define pre-training dataset
-            pass
-        else: # Define fine-tuning dataset
-            if training:
-                self.data_dir = './adni_t1s_baseline'
-                self.files = [x for x in os.listdir(self.data_dir) if x in os.listdir(self.data_dir)]
-                #self.data = np.load(config.data_train)
-                self.labels = pd.read_csv('./csv/{0}CN_{1}_train{2}.csv'.format(task_name, stratify, task_target_num))
-            elif validation:
-                self.data_dir = './adni_t1s_baseline'
-                self.files = [x for x in os.listdir(self.data_dir) if x in os.listdir(self.data_dir)]
-                #self.data = np.load(config.data_val)
-                self.labels = pd.read_csv('./csv/{0}CN_{1}_valid{2}.csv'.format(task_name, stratify, task_target_num))
-            elif test:
-                self.data_dir = './adni_t1s_baseline'
-                self.files = [x for x in os.listdir(self.data_dir) if x in os.listdir(self.data_dir)]
-                #self.data = np.load(config.data_val)
-                self.labels = pd.read_csv('./csv/{0}CN_{1}_test{2}.csv'.format(task_name, stratify, task_target_num))
+        if training:
+            #self.data = np.load(config.data_train)
+            self.df = pd.read_csv(self.train_subject_folder)
+            self.files = list(self.df['File_name'])
+            self.data_dir = data_dir +'/train'
+            self.files = [x for x in self.files if x in os.listdir(self.data_dir)]
+            self.data = []
+            for f in range(len(self.files)):
+                self.data.append(os.path.join(self.data_dir, self.files[f]))
             
+        elif validation:
+            self.df = pd.read_csv(self.val_subject_folder)
+            self.files = list(self.df['File_name'])
+            #self.files = list(df['File_name']) #list of files
+            self.data_dir = data_dir +'/val'
+            self.files = [x for x in self.files if x in os.listdir(self.data_dir)]
+
+            
+            self.data = []
+            for f in range(len(self.files)):
+                self.data.append(os.path.join(self.data_dir, self.files[f]))
+            
+            
+
         #assert self.data.shape[1:] == tuple(config.input_size), "3D images must have shape {}".\
         #    format(config.input_size)
-        ###
         
 
     def collate_fn(self, list_samples):
@@ -75,30 +91,14 @@ class MRIDataset(Dataset):
     def __getitem__(self, idx):
 
         # For a single input x, samples (t, t') ~ T to generate (t(x), t'(x))
-        ### ADNI
-        file = self.files[idx]
-        path = os.path.join(self.data_dir, file)
-        img = nib.load(os.path.join(path, 'brain_to_MNI_nonlin.nii.gz'))
-        img = np.swapaxes(img.get_data(),1,2)
-        img = np.flip(img,1)
-        img = np.flip(img,2)
-        img = resize(img, (121, 145, 121), mode='constant')
-        img = torch.from_numpy(img).float().view(1, 121, 145, 121)
-        img = img.numpy()
-        
-        np.random.seed()
-        #x1 = self.transforms(img)
-        #x2 = self.transforms(img)
-        x = self.transforms(img)
-        label = self.labels['Dx.new'].values[idx]
-        if label == 'CN':
-            labels = torch.LongTensor([0])
-        else:
-            labels = torch.LongTensor([1])
-        #x = np.stack((x1, x2), axis=0)
-        ###
-        
+     # follow the transform type used in SimCLR    
+        img = nib.load(os.path.join(self.data[idx],'brain_to_MNI_nonlin.nii.gz')).get_data() #(Assume) self.warped == True #returns array of the image data
+        x1 = self.transforms(img)
+        x2 = self.transforms(img)
+        labels = self.df[self.config.label_name].values[idx]
+        x = np.stack((x1, x2), axis=0)
+
         return (x, labels)
 
     def __len__(self):
-        return len(self.labels)
+        return len(self.files)

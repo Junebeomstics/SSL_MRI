@@ -1,3 +1,4 @@
+
 from scipy.ndimage import gaussian_filter
 from skimage import transform as sk_tf
 from collections import namedtuple
@@ -7,7 +8,6 @@ import numbers
 
 def interval(obj, lower=None):
     """ Listify an object.
-
     Parameters
     ----------
     obj: 2-uplet or number
@@ -15,7 +15,6 @@ def interval(obj, lower=None):
     lower: number, default None
         the lower bound of the interval. If not specified, a symetric
         interval is generated.
-
     Returns
     -------
     interval: 2-uplet
@@ -105,6 +104,10 @@ class Crop(object):
 
     def __call__(self, arr):
         assert isinstance(arr, np.ndarray)
+        if self.shape[0] == 1.:
+            self.shape = np.delete(self.shape,0)
+        else:
+            pass
         assert type(self.shape) == int or len(self.shape) == len(arr.shape), "Shape of array {} does not match {}".\
             format(arr.shape, self.shape)
 
@@ -155,6 +158,8 @@ class Cutout(object):
             size = [self.patch_size for _ in range(len(img_shape))]
         else:
             size = np.copy(self.patch_size)
+            size = np.delete(size,0)
+        
         assert len(size) == len(img_shape), "Incorrect patch dimension."
         indexes = []
         for ndim in range(len(img_shape)):
@@ -222,16 +227,13 @@ class Blur(object):
 class Noise(object):
     def __init__(self, snr=None, sigma=None, noise_type="gaussian"):
         """ Add random Gaussian or Rician noise.
-
            The noise level can be specified directly by setting the standard
            deviation or the desired signal-to-noise ratio for the Gaussian
            distribution. In the case of Rician noise sigma is the standard deviation
            of the two Gaussian distributions forming the real and imaginary
            components of the Rician noise distribution.
-
            In anatomical scans, CNR values for GW/WM ranged from 5 to 20 (1.5T and
            3T) for SNR around 40-100 (http://www.pallier.org/pdfs/snr-in-mri.pdf).
-
            Parameters
            ----------
            snr: float, default None
@@ -269,5 +271,3 @@ class Noise(object):
             transformed += np.square(noise[1])
             transformed = np.sqrt(transformed)
         return transformed
-
-
