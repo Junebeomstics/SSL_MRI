@@ -1,2 +1,0 @@
-usage: main.py [-h] --mode {pretraining,finetuning} --target_num TARGET_NUM
-main.py: error: the following arguments are required: --target_num
