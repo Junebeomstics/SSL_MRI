@@ -44,7 +44,7 @@ class Config:
             self.nb_epochs_per_saving = 10
             self.pin_mem = True
             self.num_cpu_workers = 1
-            self.nb_epochs = 100
+            self.nb_epochs = 5 # ADNI
             self.cuda = True
             self.tf = "cutout" # ADNI
             self.input_size = (1, 121, 145, 121) # ADNI
@@ -53,5 +53,5 @@ class Config:
             self.weight_decay = 5e-5
 
             self.pretrained_path = "./DenseNet121_BHB-10K_yAwareContrastive.pth" # ADNI
-            self.num_classes = 3 # ADNI - CN, AD, MCI
+            self.num_classes = 2 # ADNI - AD vs CN or MCI vs CN
             self.model = "DenseNet"

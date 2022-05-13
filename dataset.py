@@ -10,7 +10,7 @@ from skimage.transform import resize
 
 class MRIDataset(Dataset):
 
-    def __init__(self, config, target_num, training=False, validation=False, test=False, *args, **kwargs):
+    def __init__(self, config, task_name, task_target_num, stratify, training=False, validation=False, test=False, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if training:
             assert training != validation
@@ -42,22 +42,25 @@ class MRIDataset(Dataset):
                                      probability=1)
         
         ### ADNI
-        if training:
-            self.data_dir = './adni_t1s_baseline'
-            self.files = [x for x in os.listdir(self.data_dir) if x in os.listdir(self.data_dir)]
-            #self.data = np.load(config.data_train)
-            self.labels = pd.read_csv('./csv/fsdat_baseline_train_{0}.csv'.format(target_num))
-        elif validation:
-            self.data_dir = './adni_t1s_baseline'
-            self.files = [x for x in os.listdir(self.data_dir) if x in os.listdir(self.data_dir)]
-            #self.data = np.load(config.data_val)
-            self.labels = pd.read_csv('./csv/fsdat_baseline_valid1_{0}.csv'.format(target_num)) # doesn't matter
-        elif test:
-            self.data_dir = './adni_t1s_baseline'
-            self.files = [x for x in os.listdir(self.data_dir) if x in os.listdir(self.data_dir)]
-            #self.data = np.load(config.data_val)
-            self.labels = pd.read_csv('./csv/fsdat_baseline_test_{0}.csv'.format(target_num))
-        
+        if task_target_num == 0: # Define pre-training dataset
+            pass
+        else: # Define fine-tuning dataset
+            if training:
+                self.data_dir = './adni_t1s_baseline'
+                self.files = [x for x in os.listdir(self.data_dir) if x in os.listdir(self.data_dir)]
+                #self.data = np.load(config.data_train)
+                self.labels = pd.read_csv('./csv/{0}CN_{1}_train{2}.csv'.format(task_name, stratify, task_target_num))
+            elif validation:
+                self.data_dir = './adni_t1s_baseline'
+                self.files = [x for x in os.listdir(self.data_dir) if x in os.listdir(self.data_dir)]
+                #self.data = np.load(config.data_val)
+                self.labels = pd.read_csv('./csv/{0}CN_{1}_valid{2}.csv'.format(task_name, stratify, task_target_num))
+            elif test:
+                self.data_dir = './adni_t1s_baseline'
+                self.files = [x for x in os.listdir(self.data_dir) if x in os.listdir(self.data_dir)]
+                #self.data = np.load(config.data_val)
+                self.labels = pd.read_csv('./csv/{0}CN_{1}_test{2}.csv'.format(task_name, stratify, task_target_num))
+            
         #assert self.data.shape[1:] == tuple(config.input_size), "3D images must have shape {}".\
         #    format(config.input_size)
         ###
@@ -90,10 +93,8 @@ class MRIDataset(Dataset):
         label = self.labels['Dx.new'].values[idx]
         if label == 'CN':
             labels = torch.LongTensor([0])
-        elif label == 'MCI':
+        else:
             labels = torch.LongTensor([1])
-        elif label == 'AD':
-            labels = torch.LongTensor([2])
         #x = np.stack((x1, x2), axis=0)
         ###
         

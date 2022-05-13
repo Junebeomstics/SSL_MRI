@@ -1,0 +1,1 @@
+Directory where ckpt files located.

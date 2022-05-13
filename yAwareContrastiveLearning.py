@@ -3,13 +3,13 @@ import torch
 from torch.nn import DataParallel
 from tqdm import tqdm
 import logging
-
+from Earlystopping import EarlyStopping # ADNI
 
 
 
 class yAwareCLModel:
 
-    def __init__(self, net, loss, loader_train, loader_val, loader_test, config, scheduler=None): # ADNI
+    def __init__(self, net, loss, loader_train, loader_val, loader_test, config, task_name, task_target_num, stratify, scheduler=None): # ADNI
         """
 
         Parameters
@@ -34,6 +34,12 @@ class yAwareCLModel:
             raise ValueError("No GPU found: set cuda=False parameter.")
         self.config = config
         self.metrics = {}
+        ### ADNI
+        if task_target_num != 0:
+            self.task_name = task_name
+            self.task_target_num = task_target_num
+            self.stratify = stratify
+        ###
 
         if hasattr(config, 'pretrained_path') and config.pretrained_path is not None:
             self.load_model(config.pretrained_path)
@@ -104,7 +110,7 @@ class yAwareCLModel:
     def fine_tuning(self):
         print(self.loss)
         print(self.optimizer)
-        all_outputs = [] # ADNI
+        early_stopping = EarlyStopping(patience = 20, path = './ckpts/ADNI_{0}_{2}_{1}.pt'.format(self.task_name, self.task_target_num, self.stratify)) # ADNI
         for epoch in range(self.config.nb_epochs):
             ## Training step
             self.model.train()
@@ -128,7 +134,7 @@ class yAwareCLModel:
             nb_batch = len(self.loader_val)
             pbar = tqdm(total=nb_batch, desc="Validation")
             val_loss = 0
-            epoch_outputs = [] # ADNI
+            val_acc = 0 # ADNI
             with torch.no_grad():
                 self.model.eval()
                 for (inputs, labels) in self.loader_val:
@@ -137,19 +143,22 @@ class yAwareCLModel:
                     inputs = inputs.to(self.device)
                     labels = labels.to(self.device)
                     y = self.model(inputs)
-                    m = torch.nn.Softmax(dim=1) # ADNI
-                    output = m(y) # ADNI
-                    epoch_outputs.append(output)
+                    _, predicted = torch.max(y, 1) # ADNI
                     batch_loss = self.loss(y, labels)
                     val_loss += float(batch_loss) / nb_batch
+                    val_acc += (predicted == labels).sum().item() # ADNI
             pbar.close()
-            all_outputs.append(epoch_outputs) # ADNI
 
             print("Epoch [{}/{}] Training loss = {:.4f}\t Validation loss = {:.4f}\t".format(
                 epoch+1, self.config.nb_epochs, training_loss, val_loss), flush=True)
-
+            print('Validation accuracy:', (100 * val_acc / (self.task_target_num / 4)), '%') # ADNI
+            early_stopping(val_loss, self.model) # ADNI
+            if early_stopping.early_stop: # ADNI
+                print("Early stopped") # ADNI
+                break # ADNI
             if self.scheduler is not None:
                 self.scheduler.step()
+        self.model.load_state_dict(torch.load('./ckpts/ADNI_{0}_{2}_{1}.pt'.format(self.task_name, self.task_target_num, self.stratify))) # ADNI
 
         ## Test step
         nb_batch = len(self.loader_test)
@@ -166,14 +175,13 @@ class yAwareCLModel:
                 labels = labels.to(self.device)
                 y = self.model(inputs)
                 ### ADNI
+                _, predicted = torch.max(y, 1) # ADNI
                 m = torch.nn.Softmax(dim=1)
                 output = m(y)
                 if int(labels) == 0:
-                    onehot = torch.LongTensor([[1, 0, 0]])
+                    onehot = torch.LongTensor([[1, 0]])
                 elif int(labels) == 1:
-                    onehot = torch.LongTensor([[0, 1, 0]])
-                else:
-                    onehot = torch.LongTensor([[0, 0, 1]])
+                    onehot = torch.LongTensor([[0, 1]])
                 onehot = onehot.cuda()
                 outGT = torch.cat((outGT, onehot), 0)
                 outPRED = torch.cat((outPRED, output), 0)
