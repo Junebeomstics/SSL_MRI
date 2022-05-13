@@ -201,7 +201,7 @@ class yAwareCLModel:
                 _, predicted = torch.max(y, 1)
                 test_acc += (predicted == labels).sum().item()
         pbar.close()
-        print("Test loss: {:.4f}%\t, Test accuracy: {:.2f}%\t".format(
+        print("\nTest loss: {:.4f}\t, Test accuracy: {:.2f}%\t".format(
             test_loss / len(self.loader_test.dataset), 100 * test_acc / len(self.loader_test.dataset)), flush=True)
         ###
         return outGT, outPRED # ADNI
