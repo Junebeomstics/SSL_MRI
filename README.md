@@ -1,7 +1,27 @@
-ADNI Dataset Adaptation (220513) - wonyoung
+# SSL_MRI
+
+Team members: 권준범, 류명훈, 장원영, 채연 
+
+## Introduction
+
+This repository is for Team project of 'Meta learning' class.
+The main focus of our project is to observe the applicability of self-supervised learning to MRI images to predict clinical outcomes.
+
+The main contributions of our project are as follows:
+- Large scale pretraining with UK Biobank datasets with more than 40K samples.
+- Based on y-aware contrastive learning module, we observe the effect of several metadata as an anchor to model the distance between negative pairs. (age, sex, GPS) 
+- we verify the contribution of several transformation methods to make positive samples in self supervised learning.
+- we compare the performances of famous baseline models such as Simclr, Moco, Model Genesis.
+- we develop new framework that can integrate the self-supervised learning process with multi-task learning
+
+
+
+## ADNI Dataset Adaptation (220513) - wonyoung
 
 ADNI 데이터셋에 맞춘 Pre-training 및 Fine-tuning 코드를 추가했습니다.
+
 `.py` 파일 내에 `# ADNI` (코드 라인), 혹은 `### ADNI` (코드 블록) 표시가 된 부분이 원래 original 코드에서 수정한 부분입니다.
+
 **아래는 이전 commit 버전이 아닌, 논문 original 코드와 비교한 내용입니다.**
 
 - `main.py`
@@ -44,6 +64,6 @@ ADNI 데이터셋에 맞춘 Pre-training 및 Fine-tuning 코드를 추가했습�
 python3 main.py --mode finetuning --task_name AD --task_target_num 100 --stratify balan
 ```
 
-주간과제
+## 주간과제
 - [ ] 학습 종료 후 AUROC plot 및 학습 결과 `.txt.` 파일 추가하기
 - [ ] ADNI 데이터셋으로 Pre-training 진행하기
