@@ -1,1 +1,1 @@
-Directory where ckpt files located.
+Directory where `.pt` files saved/located.
