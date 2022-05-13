@@ -30,7 +30,7 @@ ADNI 데이터셋에 맞춘 Pre-training 및 Fine-tuning 코드를 추가했습�
   - `--task_target_num`은 Fine-tuning task의 `N_train` 숫자로, `100` 혹은 `500`을 입력합니다.
   - `--stratify`는 Fine-tuning task의 `N_train` 숫자의 stratify 여부로, `strat` 혹은 `balan`을 입력합니다.
   - Test dataloader를 추가로 정의하고, AUROC를 산출하는 코드를 추가했습니다.
-  - AUROC 플롯은 `figs` 디렉토리에 저장됩니다.
+  - AUROC 은 `figs` 디렉토리에 저장됩니다.
 
 - `dataset.py`
   - `MRIDataset` class명을 `ADNI_Dataset`로 변경했습니다.
