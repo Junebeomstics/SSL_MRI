@@ -48,7 +48,7 @@ ADNI 데이터셋에 맞춘 Pre-training 및 Fine-tuning 코드를 추가했습�
 - `yAwareContrastiveLearning.py`
   - Epoch마다 Training accuracy와 Validation accuracy를 확인할 수 있도록 수정했습니다.
   - 일정 epoch 동안 Validation loss에 개선이 없는 경우 early stopping을 실행하도록 수정했습니다.
-  - Best 모델을 `.ckpts` 디렉토리에 저장하도록 수정했습니다.
+  - Best 모델을 `ckpts` 디렉토리에 저장하도록 수정했습니다.
   - Test 데이터셋을 처리하는 코드를 추가했습니다.
   - Train, Valid, Test loss 계산식을 일부 수정했습니다.
 
@@ -65,5 +65,5 @@ python3 main.py --mode finetuning --task_name AD --task_target_num 100 --stratif
 ```
 
 ## 주간과제
-- [ ] 학습 종료 후 AUROC plot 및 학습 결과 `.txt.` 파일 추가하기
+- [ ] 학습 종료 후 AUROC plot 및 학습 결과 `.txt` 파일 추가하기
 - [ ] ADNI 데이터셋으로 Pre-training 진행하기
