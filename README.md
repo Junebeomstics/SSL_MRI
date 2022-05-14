@@ -68,24 +68,19 @@ python3 main.py --mode finetuning --task_name AD --task_target_num 100 --stratif
 
 ## ADNI Fine-tuning 실험 결과
 1. AD vs CN (N=100 stratified)
-Test ACC: 69.63%
-Test AUROC: 0.8009
+Test ACC: 69.63%, Test AUROC: 0.8009
 
 2. AD vs CN (N=100 balanced)
-Test ACC: 81.21%
-Test AUROC: 0.8606
+Test ACC: 81.21%, Test AUROC: 0.8606
 
 3. AD vs CN (N=500 stratified)
-Test ACC: 83.05%
-Test AUROC: 0.8937
+Test ACC: 83.05%, Test AUROC: 0.8937
  
 4. MCI vs CN (N=100 stratified/balanced)
-Test ACC: 53.03%
-Test AUROC: 0.6209
+Test ACC: 53.03%, Test AUROC: 0.6209
 
 5. MCI vs CN (N=500 stratified/balanced)
-Test ACC: 61.12%
-Test AUROC: 0.6445
+Test ACC: 61.12%, Test AUROC: 0.6445
 
 ## 주간과제
 - [x] 학습 종료 후 AUROC plot 및 학습 결과 `.txt` 파일 추가하기
