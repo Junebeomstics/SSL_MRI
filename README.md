@@ -68,10 +68,10 @@ python3 main.py --mode finetuning --task_name AD --task_target_num 100 --stratif
 
 ## ADNI Fine-tuning 실험 결과
 1. AD vs CN (N=100 stratified)
-Test ACC: 69.63%, Test AUROC: 0.8009
+Test ACC: 81.21%, Test AUROC: 0.8606
 
 2. AD vs CN (N=100 balanced)
-Test ACC: 81.21%, Test AUROC: 0.8606
+Test ACC: 69.63%, Test AUROC: 0.8009
 
 3. AD vs CN (N=500 stratified)
 Test ACC: 83.05%, Test AUROC: 0.8937
