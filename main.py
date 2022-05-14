@@ -1,5 +1,8 @@
+### ADNI
 import os
 #os.environ["CUDA_VISIBLE_DEVICES"] = '2'
+import time
+###
 import numpy as np
 from dataset import ADNI_Dataset
 from torch.utils.data import DataLoader, Dataset, RandomSampler
@@ -10,14 +13,14 @@ from models.densenet import densenet121
 from models.unet import UNet
 import argparse
 from config import Config, PRETRAINING, FINE_TUNING
-# ADNI
+### ADNI
 import matplotlib.pyplot as plt
 import sklearn.metrics as metrics
 from sklearn.metrics import roc_auc_score
-
+###
 
 if __name__ == "__main__":
-
+    start_time = time.time() # ADNI
     parser = argparse.ArgumentParser()
     parser.add_argument("--mode", type=str, choices=["pretraining", "finetuning"], required=True,
                         help="Set the training mode. Do not forget to configure config.py accordingly !")
@@ -34,12 +37,9 @@ if __name__ == "__main__":
     
     ### ADNI
     if config.mode == PRETRAINING:
-        task_name = 'no' # no fine-tuning
-        task_target_num = 0 # no fine-tuning
-        stratify = "no" # no fine-tuning
-        dataset_train = ADNI_Dataset(config, task_name, task_target_num, stratify, training=True)
-        dataset_val = ADNI_Dataset(config, task_name, task_target_num, stratify, validation=True)
-        dataset_test = ADNI_Dataset(config, task_name, task_target_num, stratify, test=True)
+        dataset_train = ADNI_Dataset(config, 'no', 0, "no", training=True) # no fine-tuning
+        dataset_val = ADNI_Dataset(config, 'no', 0, "no", validation=True) # no fine-tuning
+        dataset_test = ADNI_Dataset(config, 'no', 0, "no", test=True) # no fine-tuning
     elif config.mode == FINE_TUNING:
         dataset_train = ADNI_Dataset(config, args.task_name, args.task_target_num, args.stratify, training=True)
         dataset_val = ADNI_Dataset(config, args.task_name, args.task_target_num, args.stratify, validation=True)
@@ -126,4 +126,7 @@ if __name__ == "__main__":
         plt.xlabel('False Positive Rate')
         plt.savefig('./figs/ADNI_{0}_{1}_{2}_ROC.png'.format(args.task_name, args.stratify, args.task_target_num), dpi = 100)
         plt.close()
+    
+    end_time = time.time()
+    print('Total', round((end_time - start_time) / 60), 'minutes elapsed.')
     ###
