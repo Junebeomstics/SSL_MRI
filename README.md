@@ -20,7 +20,7 @@ The main contributions of our project are as follows:
 
 ADNI 데이터셋에 맞춘 Pre-training 및 Fine-tuning 코드를 추가했습니다.
 
-`.py` 파일 내에 `# ADNI` (코드 라인), 혹은 `### ADNI` (코드 블록) 표시가 된 부분이 원래 original 코드에서 수정한 부분입니다.
+`.py` 파일 내에 `# ADNI` (코드 라인), 혹은 `### ADNI` (코드 블록) 표시한 부분이 original 코드에서 수정한 부분입니다.
 
 **아래는 이전 commit 버전이 아닌, 논문 original 코드와 비교한 내용입니다.**
 
