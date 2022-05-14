@@ -84,4 +84,6 @@ Test ACC: 61.12%, Test AUROC: 0.6445
 
 ## 주간과제
 - [x] 학습 종료 후 AUROC plot 및 학습 결과 `.txt` 파일 추가하기
+- [ ] AD vs MCI 학습 진행하기 (3 tasks)
+- [ ] Backbone freeze 하고 학습 진행하기 (8 tasks)
 - [ ] ADNI 데이터셋으로 Pre-training 진행하기
