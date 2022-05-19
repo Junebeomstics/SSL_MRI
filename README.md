@@ -87,4 +87,4 @@ Test ACC: 61.12%, Test AUROC: 0.6445
 - [ ] AD vs MCI 학습 진행하기 (3 tasks)
 - [ ] Backbone freeze 하고 학습 진행하기 (8 tasks)
 - [ ] ADNI 데이터셋으로 Pre-training 진행하기
-- [ ] multiple meta-data 활용 
+- [ ] multiple meta-data 활용 방안 확인하기
