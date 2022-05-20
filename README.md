@@ -40,10 +40,11 @@ ADNI 데이터셋에 맞춘 Pre-training 및 Fine-tuning 코드를 추가했습�
 
 - `datasplit.py`
   - `fsdat_baseline.csv` 파일을 Train, Valid, Test로 나누기 위해 새로 추가한 파일입니다.
-  - Fine-tuning task로 1) AD vs CN, 2) MCI vs CN 두 가지 task를 정의하고 `.csv` 파일을 생성했습니다.
+  - Fine-tuning task로 1) AD vs CN, 2) MCI vs CN, 3) AD vs MCI 세 가지 task를 정의하고 `.csv` 파일을 생성했습니다.
   - 각 task별로 `N_train = 100`과 `N_train = 500`을 나눠서 가정했습니다.
   - AD vs CN의 경우 데이터 불균형이 있어서 `N_train = 100`에 대해 stratification 적용 여부를 다시 나눴습니다.
-  - 총 task의 개수는 5개입니다. 자세한 task 구성 정보 및 `.csv` 파일명은 `data_config.txt` 파일을 참고하세요.
+  - AD vs MCI의 경우 데이터 불균형이 있어서 `N_train = 100`에 대해 stratification 적용 여부를 다시 나눴습니다.
+  - 총 task의 개수는 8개입니다. 자세한 task 구성 정보 및 `.csv` 파일명은 `data_config.txt` 파일을 참고하세요.
   - Pre-training을 위해 `CN_train.csv`와 `CN_valid.csv`를 생성했습니다.
   - `.csv` 파일은 편의상 `csv` 디렉토리에 정리했습니다.
 
@@ -63,7 +64,7 @@ ADNI 데이터셋에 맞춘 Pre-training 및 Fine-tuning 코드를 추가했습�
 
 코드 실행 예시는 아래와 같습니다.
 ```bash
-python3 main.py --mode finetuning --task_name AD --task_target_num 100 --stratify balan
+python3 main.py --mode finetuning --task_name ADCN --task_target_num 100 --stratify balan
 ```
 
 ## ADNI Fine-tuning 실험 결과
@@ -82,9 +83,19 @@ Test ACC: 53.03%, Test AUROC: 0.6209
 5. MCI vs CN (N=500 stratified/balanced)
 Test ACC: 61.12%, Test AUROC: 0.6445
 
+6. AD vs MCI (N=100 stratified)
+Test ACC: 73.31%, Test AUROC: 0.6590
+
+7. AD vs MCI (N=100 balanced)
+Test ACC: 56.62%, Test AUROC: 0.5862
+
+8. AD vs MCI (N=500 stratified)
+Test ACC: 75.05%, Test AUROC: 0.7505
+
+
 ## 주간과제
 - [x] 학습 종료 후 AUROC plot 및 학습 결과 `.txt` 파일 추가하기
-- [ ] AD vs MCI 학습 진행하기 (3 tasks)
+- [x] AD vs MCI 후 AUROC plot 및 학습 결과 `.txt` 파일 추가하기
 - [ ] Backbone freeze 하고 학습 진행하기 (8 tasks)
 - [ ] ADNI 데이터셋으로 Pre-training 진행하기
 - [ ] multiple meta-data 활용 방안 확인하기
