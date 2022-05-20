@@ -16,7 +16,7 @@ The main contributions of our project are as follows:
 
 
 
-## ADNI Dataset Adaptation (220513) - wonyoung
+## ADNI Dataset Adaptation (220520) - wonyoung
 
 ADNI 데이터셋에 맞춘 Pre-training 및 Fine-tuning 코드를 추가했습니다.
 
