@@ -67,7 +67,7 @@ python3 main.py --mode finetuning --task_name AD --task_target_num 100 --stratif
 ```
 
 
-## ADNI Dataset Adaptation (220520 commit ) - wonyoung
+## ADNI Dataset Adaptation (220520 commit `e2b229b`) - wonyoung
 
 **아래는 commit `6b5f03d` 에서 수정한 내용입니다.**
 
