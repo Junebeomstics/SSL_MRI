@@ -31,3 +31,23 @@
             valid  100 (MCI  52, CN  48) : MCICN_strat_valid500.csv
             test   926 (MCI 478, CN 448) : MCICN_strat_test500.csv
             TOTAL 1526 (MCI 788, CN 738)
+
+3. AD (281) vs MCI (788) Total 1069
+    a) For N = 100
+        1) stratified sample ratio
+            train  100 (AD  26, MCI  74) : ADMCI_strat_train100.csv
+            valid   25 (AD   7, MCI  18) : ADMCI_strat_valid100.csv
+            test   944 (AD 248, MCI 696) : ADMCI_strat_test100.csv
+            TOTAL 1069 (AD 281, MCI 788)
+        2) balanced sample ratio
+            train  100 (AD  50, MCI  50) : ADMCI_balan_train100.csv
+            valid   25 (AD  12, MCI  13) : ADMCI_balan_valid100.csv
+            test   438 (AD 219, MCI 219) : ADMCI_balan_test100.csv
+            TOTAL  563 (AD 281, MCI 282)
+    b) For N = 500
+        1) stratified sample ratio
+            train  500 (AD 132, MCI 368) : ADMCI_strat_train500.csv
+            valid  100 (AD  26, MCI  74) : ADMCI_strat_valid500.csv
+            test   469 (AD 123, MCI 346) : ADMCI_strat_test500.csv
+            TOTAL 1069 (AD 281, MCI 788)
+        2) balanced sample ratio (NA)

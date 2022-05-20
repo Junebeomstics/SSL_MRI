@@ -24,7 +24,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--mode", type=str, choices=["pretraining", "finetuning"], required=True,
                         help="Set the training mode. Do not forget to configure config.py accordingly !")
-    parser.add_argument("--task_name", type=str, required=False, # ADNI
+    parser.add_argument("--task_names", type=str, choices=["ADCN", "MCICN", "ADMCI"], required=False, # ADNI
                         help="Set the name of the fine-tuning task.")
     parser.add_argument("--task_target_num", type=int, required=False, # ADNI
                         help="Set the number of training samples for the fine-tuning task.")
@@ -37,13 +37,13 @@ if __name__ == "__main__":
     
     ### ADNI
     if config.mode == PRETRAINING:
-        dataset_train = ADNI_Dataset(config, 'no', 0, "no", training=True) # no fine-tuning
-        dataset_val = ADNI_Dataset(config, 'no', 0, "no", validation=True) # no fine-tuning
-        dataset_test = ADNI_Dataset(config, 'no', 0, "no", test=True) # no fine-tuning
+        dataset_train = ADNI_Dataset(config, "no", 0, "no", training=True) # no fine-tuning
+        dataset_val = ADNI_Dataset(config, "no", 0, "no", validation=True) # no fine-tuning
+        dataset_test = ADNI_Dataset(config, "no", 0, "no", test=True) # no fine-tuning
     elif config.mode == FINE_TUNING:
-        dataset_train = ADNI_Dataset(config, args.task_name, args.task_target_num, args.stratify, training=True)
-        dataset_val = ADNI_Dataset(config, args.task_name, args.task_target_num, args.stratify, validation=True)
-        dataset_test = ADNI_Dataset(config, args.task_name, args.task_target_num, args.stratify, test=True)
+        dataset_train = ADNI_Dataset(config, args.task_names, args.task_target_num, args.stratify, training=True)
+        dataset_val = ADNI_Dataset(config, args.task_names, args.task_target_num, args.stratify, validation=True)
+        dataset_test = ADNI_Dataset(config, args.task_names, args.task_target_num, args.stratify, test=True)
     ###
 
     loader_train = DataLoader(dataset_train,
@@ -94,9 +94,9 @@ if __name__ == "__main__":
         loss = CrossEntropyLoss()
 
     if config.mode == PRETRAINING:
-        model = yAwareCLModel(net, loss, loader_train, loader_val, loader_test, config, task_name, task_target_num, stratify) # ADNI
+        model = yAwareCLModel(net, loss, loader_train, loader_val, loader_test, config, "no", 0, "no") # ADNI
     else:
-        model = yAwareCLModel(net, loss, loader_train, loader_val, loader_test, config, args.task_name, args.task_target_num, args.stratify) # ADNI
+        model = yAwareCLModel(net, loss, loader_train, loader_val, loader_test, config, args.task_names, args.task_target_num, args.stratify) # ADNI
 
     if config.mode == PRETRAINING:
         model.pretraining()
@@ -107,24 +107,39 @@ if __name__ == "__main__":
     
     ### ADNI
     if config.mode == FINE_TUNING:
-        outAUROC = []
         outGTnp = outGT.cpu().numpy()
         outPREDnp = outPRED.cpu().numpy()
-        outAUROC = roc_auc_score(outGTnp[:, 1], outPREDnp[:, 1]) # idx 1 is case label
-        print('\n<<< {0} Test Results: AUROC >>>'.format(args.task_name))
-        print('{:.4f}\n'.format(outAUROC))
+        print('\n<<< Test Results: AUROC >>>')
+        outAUROC = []
+        for i in range(config.num_classes):
+            outAUROC.append(roc_auc_score(outGTnp[:, i], outPREDnp[:, i]))
+        aurocMean = np.array(outAUROC).mean()
+        print('MEAN', ': {:.4f}'.format(aurocMean))
         
-        fpr, tpr, threshold = metrics.roc_curve(outGT.cpu()[:, 1], outPRED.cpu()[:, 1])
-        roc_auc = metrics.auc(fpr, tpr)
-        plt.plot(fpr, tpr, label = 'AUC = %0.2f' % (roc_auc))
-        plt.title('ROC for {0}'.format(args.task_name))
-        plt.legend(loc = 'lower right')
-        plt.plot([0, 1], [0, 1], 'r--')
-        plt.xlim([0, 1])
-        plt.ylim([0, 1])
-        plt.ylabel('True Positive Rate')
-        plt.xlabel('False Positive Rate')
-        plt.savefig('./figs/ADNI_{0}_{1}_{2}_ROC.png'.format(args.task_name, args.stratify, args.task_target_num), dpi = 100)
+        if 'ADCN' == args.task_names:
+            class_names = ['CN', 'AD']
+        elif 'MCICN' == args.task_names:
+            class_names = ['CN', 'MCI']
+        else:
+            class_names = ['MCI', 'AD']
+
+        fig, ax = plt.subplots(nrows = 1, ncols = config.num_classes)
+        ax = ax.flatten()
+        fig.set_size_inches((config.num_classes * 10, 10))
+        for i in range(config.num_classes):
+            print(class_names[i], ': {:.4f}'.format(outAUROC[i]))
+            fpr, tpr, threshold = metrics.roc_curve(outGT.cpu()[:, i], outPRED.cpu()[:, i])
+            roc_auc = metrics.auc(fpr, tpr)
+            ax[i].plot(fpr, tpr, label = 'AUC = %0.2f' % (roc_auc))
+            ax[i].set_title('ROC for {0}'.format(class_names[i]))
+            ax[i].legend(loc = 'lower right')
+            ax[i].plot([0, 1], [0, 1],'r--')
+            ax[i].set_xlim([0, 1])
+            ax[i].set_ylim([0, 1])
+            ax[i].set_ylabel('True Positive Rate')
+            ax[i].set_xlabel('False Positive Rate')
+        
+        plt.savefig('./figs/ADNI_{0}_{1}_{2}_ROC.png'.format(args.task_names, args.stratify, args.task_target_num), dpi = 100)
         plt.close()
     
     end_time = time.time()

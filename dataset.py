@@ -10,7 +10,7 @@ from skimage.transform import resize
 
 class ADNI_Dataset(Dataset):
 
-    def __init__(self, config, task_name, task_target_num, stratify, training=False, validation=False, test=False, *args, **kwargs): # ADNI
+    def __init__(self, config, task_names, task_target_num, stratify, training=False, validation=False, test=False, *args, **kwargs): # ADNI
         super().__init__(*args, **kwargs)
         ### ADNI
         if training:
@@ -27,6 +27,7 @@ class ADNI_Dataset(Dataset):
         self.transforms = Transformer()
         self.config = config
         self.transforms.register(Normalize(), probability=1.0)
+        self.task_names = task_names # ADNI
         
         if config.tf == "all_tf":
             self.transforms.register(Flip(), probability=0.5)
@@ -58,19 +59,19 @@ class ADNI_Dataset(Dataset):
         else: # Define fine-tuning dataset
             if training:
                 self.data_dir = './adni_t1s_baseline'
-                self.labels = pd.read_csv('./csv/{0}CN_{1}_train{2}.csv'.format(task_name, stratify, task_target_num))                
+                self.labels = pd.read_csv('./csv/{0}_{1}_train{2}.csv'.format(task_names, stratify, task_target_num))                
                 self.files = [x for x in os.listdir(self.data_dir) if x[4:12] in list(self.labels['SubjectID'])]
                 #self.data = np.load(config.data_train)
 
             elif validation:
                 self.data_dir = './adni_t1s_baseline'
-                self.labels = pd.read_csv('./csv/{0}CN_{1}_valid{2}.csv'.format(task_name, stratify, task_target_num))
+                self.labels = pd.read_csv('./csv/{0}_{1}_valid{2}.csv'.format(task_names, stratify, task_target_num))
                 self.files = [x for x in os.listdir(self.data_dir) if x[4:12] in list(self.labels['SubjectID'])]
                 #self.data = np.load(config.data_val)
                 
             elif test:
                 self.data_dir = './adni_t1s_baseline'
-                self.labels = pd.read_csv('./csv/{0}CN_{1}_test{2}.csv'.format(task_name, stratify, task_target_num))
+                self.labels = pd.read_csv('./csv/{0}_{1}_test{2}.csv'.format(task_names, stratify, task_target_num))
                 self.files = [x for x in os.listdir(self.data_dir) if x[4:12] in list(self.labels['SubjectID'])]
                 #self.data = np.load(config.data_val)
             
@@ -94,10 +95,16 @@ class ADNI_Dataset(Dataset):
             labels = float(label)
         else: # Fine-tuning
             label = self.labels['Dx.new'].values[idx]
-            if label == 'CN':
-                labels = torch.LongTensor([0])
-            else:
-                labels = torch.LongTensor([1])
+            if 'CN' in self.task_names: # ADCN or MCICN
+                if label == 'CN':
+                    labels = torch.LongTensor([0])
+                else:
+                    labels = torch.LongTensor([1])
+            else: # ADMCI
+                if label == 'MCI':
+                    labels = torch.LongTensor([0])
+                else:
+                    labels = torch.LongTensor([1])
         SubjectID = self.labels['SubjectID'].values[idx]
         file_match = [file for file in self.files if SubjectID in file]
         path = os.path.join(self.data_dir, file_match[0])

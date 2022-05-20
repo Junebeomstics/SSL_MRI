@@ -9,7 +9,7 @@ from Earlystopping import EarlyStopping # ADNI
 
 class yAwareCLModel:
 
-    def __init__(self, net, loss, loader_train, loader_val, loader_test, config, task_name, task_target_num, stratify, scheduler=None): # ADNI
+    def __init__(self, net, loss, loader_train, loader_val, loader_test, config, task_names, task_target_num, stratify, scheduler=None): # ADNI
         """
 
         Parameters
@@ -36,7 +36,7 @@ class yAwareCLModel:
         self.metrics = {}
         ### ADNI
         if task_target_num != 0:
-            self.task_name = task_name
+            self.task_names = task_names
             self.task_target_num = task_target_num
             self.stratify = stratify
         ###
@@ -112,7 +112,7 @@ class yAwareCLModel:
     def fine_tuning(self):
         print(self.loss)
         print(self.optimizer)
-        early_stopping = EarlyStopping(patience = self.config.patience, path = './ckpts/ADNI_{0}_{2}_{1}.pt'.format(self.task_name, self.task_target_num, self.stratify)) # ADNI
+        early_stopping = EarlyStopping(patience = self.config.patience, path = './ckpts/ADNI_{0}_{2}_{1}.pt'.format(self.task_names, self.task_target_num, self.stratify)) # ADNI
         for epoch in range(self.config.nb_epochs):
             ## Training step
             self.model.train()
@@ -168,7 +168,7 @@ class yAwareCLModel:
                 self.scheduler.step()
 
         ### ADNI
-        self.model.load_state_dict(torch.load('./ckpts/ADNI_{0}_{2}_{1}.pt'.format(self.task_name, self.task_target_num, self.stratify))) # ADNI
+        self.model.load_state_dict(torch.load('./ckpts/ADNI_{0}_{2}_{1}.pt'.format(self.task_names, self.task_target_num, self.stratify))) # ADNI
 
         ## Test step
         nb_batch = len(self.loader_test)
