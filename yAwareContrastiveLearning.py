@@ -24,7 +24,12 @@ class yAwareCLModel:
         self.logger = logging.getLogger("yAwareCL")
         self.loss = loss
         self.model = net
-        self.optimizer = torch.optim.Adam(net.parameters(), lr=config.lr, weight_decay=config.weight_decay)
+        ### ADNI
+        if config.freeze:
+            self.optimizer = torch.optim.Adam(net.classifier.parameters(), lr=config.lr, weight_decay=config.weight_decay)
+        else:
+            self.optimizer = torch.optim.Adam(net.parameters(), lr=config.lr, weight_decay=config.weight_decay)
+        ###
         self.scheduler = scheduler
         self.loader = loader_train
         self.loader_val = loader_val

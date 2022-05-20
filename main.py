@@ -139,7 +139,11 @@ if __name__ == "__main__":
             ax[i].set_ylabel('True Positive Rate')
             ax[i].set_xlabel('False Positive Rate')
         
-        plt.savefig('./figs/ADNI_{0}_{1}_{2}_ROC.png'.format(args.task_names, args.stratify, args.task_target_num), dpi = 100)
+        if config.freeze:
+            freezed = 'f'
+        else:
+            freezed = ''
+        plt.savefig('./figs/ADNI_{0}_{1}_{2}{3}_ROC.png'.format(args.task_names, args.stratify, args.task_target_num, freezed), dpi = 100)
         plt.close()
     
     end_time = time.time()

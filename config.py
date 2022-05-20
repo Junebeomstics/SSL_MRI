@@ -37,7 +37,7 @@ class Config:
 
             self.input_size = (1, 121, 145, 121)
             self.label_name = "PTAGE" # ADNI
-
+            self.freeze = False # ADNI
             self.checkpoint_dir = "./ckpts" # ADNI
 
         elif self.mode == FINE_TUNING:
@@ -56,5 +56,6 @@ class Config:
             self.weight_decay = 5e-5
 
             self.pretrained_path = "./DenseNet121_BHB-10K_yAwareContrastive.pth" # ADNI
+            self.freeze = True # ADNI (whether to freeze pretrained layers or not)
             self.num_classes = 2 # ADNI - AD vs CN or MCI vs CN
             self.model = "DenseNet"
