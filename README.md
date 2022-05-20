@@ -26,11 +26,11 @@ ADNI 데이터셋에 맞춘 Pre-training 및 Fine-tuning 코드를 추가했습�
 
 - `main.py`
   - python argument 3개를 추가했습니다.
-  - `--task_name`은 Fine-tuning task의 이름으로, `AD` 혹은 `MCI`를 입력합니다.
+  - `--task_name`은 Fine-tuning task의 이름으로, `ADCN`, `MCICN`, `ADMCI` 중 하나를 입력합니다.
   - `--task_target_num`은 Fine-tuning task의 `N_train` 숫자로, `100` 혹은 `500`을 입력합니다.
   - `--stratify`는 Fine-tuning task의 `N_train` 숫자의 stratify 여부로, `strat` 혹은 `balan`을 입력합니다.
-  - Test dataloader를 추가로 정의하고, AUROC를 산출하는 코드를 추가했습니다.
-  - AUROC 은 `figs` 디렉토리에 저장됩니다.
+  - Test dataloader를 추가로 정의하고, AUROC plot을 산출하는 코드를 추가했습니다.
+  - AUROC plot은 `figs` 디렉토리에 저장됩니다.
   - 코드 실행 시간을 측정하기 위해 `time` 모듈을 가져왔습니다. 
 
 - `dataset.py`
