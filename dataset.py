@@ -10,24 +10,12 @@ from skimage.transform import resize
 
 class ADNI_Dataset(Dataset):
 
-    def __init__(self, config, task_names, task_target_num, stratify, training=False, validation=False, test=False, *args, **kwargs): # ADNI
+    def __init__(self, config, labels, *args, **kwargs): # ADNI
         super().__init__(*args, **kwargs)
-        ### ADNI
-        if training:
-            assert training != validation
-            assert training != test
-        elif validation:
-            assert training != validation
-            assert validation != test
-        else:
-            assert test != validation
-            assert training != test
-        ###
-
+        
         self.transforms = Transformer()
         self.config = config
         self.transforms.register(Normalize(), probability=1.0)
-        self.task_names = task_names # ADNI
         
         if config.tf == "all_tf":
             self.transforms.register(Flip(), probability=0.5)
@@ -45,41 +33,11 @@ class ADNI_Dataset(Dataset):
                                      probability=1)
         
         ### ADNI
-        if config.mode == 0: # Define pre-training dataset
-            if training:
-                self.data_dir = './adni_t1s_baseline'
-                self.labels = pd.read_csv('./csv/CN_train.csv')
-                self.files = [x for x in os.listdir(self.data_dir) if x[4:12] in list(self.labels['SubjectID'])]
-                
-            elif validation:
-                self.data_dir = './adni_t1s_baseline'
-                self.labels = pd.read_csv('./csv/CN_valid.csv')
-                self.files = [x for x in os.listdir(self.data_dir) if x[4:12] in list(self.labels['SubjectID'])]
-
-        else: # Define fine-tuning dataset
-            if training:
-                self.data_dir = './adni_t1s_baseline'
-                self.labels = pd.read_csv('./csv/{0}_{1}_train{2}.csv'.format(task_names, stratify, task_target_num))                
-                self.files = [x for x in os.listdir(self.data_dir) if x[4:12] in list(self.labels['SubjectID'])]
-                #self.data = np.load(config.data_train)
-
-            elif validation:
-                self.data_dir = './adni_t1s_baseline'
-                self.labels = pd.read_csv('./csv/{0}_{1}_valid{2}.csv'.format(task_names, stratify, task_target_num))
-                self.files = [x for x in os.listdir(self.data_dir) if x[4:12] in list(self.labels['SubjectID'])]
-                #self.data = np.load(config.data_val)
-                
-            elif test:
-                self.data_dir = './adni_t1s_baseline'
-                self.labels = pd.read_csv('./csv/{0}_{1}_test{2}.csv'.format(task_names, stratify, task_target_num))
-                self.files = [x for x in os.listdir(self.data_dir) if x[4:12] in list(self.labels['SubjectID'])]
-                #self.data = np.load(config.data_val)
-            
-        #assert self.data.shape[1:] == tuple(config.input_size), "3D images must have shape {}".\
-        #    format(config.input_size)
+        self.data_dir = './adni_t1s_baseline'
+        self.labels = labels
+        self.files = [x for x in os.listdir(self.data_dir) if x[4:12] in list(self.labels['SubjectID'])]
         ###
         
-
     def collate_fn(self, list_samples):
         list_x = torch.stack([torch.as_tensor(x, dtype=torch.float) for (x, y) in list_samples], dim=0)
         list_y = torch.stack([torch.as_tensor(y, dtype=torch.float) for (x, y) in list_samples], dim=0)
@@ -87,24 +45,15 @@ class ADNI_Dataset(Dataset):
         return (list_x, list_y)
 
     def __getitem__(self, idx):
-
         # For a single input x, samples (t, t') ~ T to generate (t(x), t'(x))
         ### ADNI
-        if self.config.mode == 0: # Pre-training
-            label = self.labels[self.config.label_name].values[idx]
-            labels = float(label)
+        if self.config.mode == 0: # Pre-training # consider multiple labels (list)
+            labels = []
+            for label_nm in self.config.label_name: # ["PTAGE", "PTGENDER"]
+                labels.append(float(self.labels[label_nm].values[idx]))
+            labels = tuple(labels)
         else: # Fine-tuning
-            label = self.labels['Dx.new'].values[idx]
-            if 'CN' in self.task_names: # ADCN or MCICN
-                if label == 'CN':
-                    labels = torch.LongTensor([0])
-                else:
-                    labels = torch.LongTensor([1])
-            else: # ADMCI
-                if label == 'MCI':
-                    labels = torch.LongTensor([0])
-                else:
-                    labels = torch.LongTensor([1])
+            labels = self.labels[self.config.label_name].values[idx]
         SubjectID = self.labels['SubjectID'].values[idx]
         file_match = [file for file in self.files if SubjectID in file]
         path = os.path.join(self.data_dir, file_match[0])

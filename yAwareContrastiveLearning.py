@@ -9,7 +9,7 @@ from Earlystopping import EarlyStopping # ADNI
 
 class yAwareCLModel:
 
-    def __init__(self, net, loss, loader_train, loader_val, loader_test, config, task_names, task_target_num, stratify, scheduler=None): # ADNI
+    def __init__(self, net, loss, loader_train, loader_val, loader_test, config, task_names, train_num, stratify, scheduler=None): # ADNI
         """
 
         Parameters
@@ -40,9 +40,9 @@ class yAwareCLModel:
         self.config = config
         self.metrics = {}
         ### ADNI
-        if task_target_num != 0:
+        if train_num != 0:
             self.task_names = task_names
-            self.task_target_num = task_target_num
+            self.train_num = train_num
             self.stratify = stratify
         ###
 
@@ -97,7 +97,7 @@ class yAwareCLModel:
             pbar.close()
 
             ### ADNI
-            metrics = "\t".join(["Validation {}: {:.4f}".format(m, v) for (m, v) in val_values.items() / len(self.loader_val.dataset)])
+            metrics = "\t".join(["Validation {}: {:.4f}".format(m, v) for (m, v) in val_values.items()])
             print("\nEpoch [{}/{}] Training loss = {:.4f}\t Validation loss = {:.4f}\t".format(
                 epoch+1, self.config.nb_epochs, training_loss / len(self.loader.dataset), val_loss / len(self.loader_val.dataset))+metrics, flush=True)
             ###
@@ -111,13 +111,12 @@ class yAwareCLModel:
                     "model": self.model.state_dict(),
                     "optimizer": self.optimizer.state_dict()},
                     os.path.join(self.config.checkpoint_dir, "{name}_epoch_{epoch}.pth".
-                                 format(name="y-Aware_Contrastive_MRI", epoch=epoch)))
-
+                                 format(name="ADNI_y-Aware_Contrastive_MRI", epoch=epoch)))
 
     def fine_tuning(self):
         print(self.loss)
         print(self.optimizer)
-        early_stopping = EarlyStopping(patience = self.config.patience, path = './ckpts/ADNI_{0}_{2}_{1}.pt'.format(self.task_names, self.task_target_num, self.stratify)) # ADNI
+        early_stopping = EarlyStopping(patience = self.config.patience, path = './ckpts/ADNI_{0}_{2}_{1}.pt'.format(self.task_names.replace('/', ''), self.train_num, self.stratify)) # ADNI
         for epoch in range(self.config.nb_epochs):
             ## Training step
             self.model.train()
@@ -173,7 +172,7 @@ class yAwareCLModel:
                 self.scheduler.step()
 
         ### ADNI
-        self.model.load_state_dict(torch.load('./ckpts/ADNI_{0}_{2}_{1}.pt'.format(self.task_names, self.task_target_num, self.stratify))) # ADNI
+        self.model.load_state_dict(torch.load('./ckpts/ADNI_{0}_{2}_{1}.pt'.format(self.task_names.replace('/', ''), self.train_num, self.stratify))) # ADNI
 
         ## Test step
         nb_batch = len(self.loader_test)
