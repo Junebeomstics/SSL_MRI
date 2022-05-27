@@ -67,6 +67,7 @@ python3 main.py --mode finetuning --task_name AD --task_target_num 100 --stratif
 ```
 
 
+
 ## ADNI Dataset Adaptation (220520 commit `e2b229b`) - wonyoung
 
 **아래는 commit `6b5f03d` 에서 수정한 내용입니다.**
@@ -95,6 +96,47 @@ python3 main.py --mode finetuning --task_name AD --task_target_num 100 --stratif
 ```bash
 python3 main.py --mode finetuning --task_name ADCN --task_target_num 100 --stratify balan
 ```
+
+
+## ADNI Dataset Adaptation (220527 commit `9a56b08`) - wonyoung
+
+**아래는 commit `e2b229b` 에서 수정한 내용입니다.**
+
+- `main.py`
+  - `main.py` 파일 내에서 train, valid, test 데이터셋을 생성하도록 코드를 추가했습니다.
+  - 기존처럼 strarification 여부, training sample 수를 조절할 수 있습니다.
+  - `--task_name`은 `--task_names`로 수정했습니다. 
+  - `--task_names`는 fine-tuning mode 실행 시에만 argument를 입력하며, `AD/CN`, `MCI/CN`, `AD/MCI` 등과 같이 class label 2개를 `/`로 구분하여 입력합니다.
+  - `--task_target_num`은 `--train_num`으로 수정했습니다.
+  - `--train_num`은 어떤 mode로 실행해도 argument를 입력해야 합니다. Pretraining 모드에서도 training sample 수로 반영됩니다.
+  - `--train_num`은 이제 100이나 500 등 고정된 숫자를 입력할 필요가 없습니다. 
+  - 단, strarification 여부 등 일부 조건 등에 의해 코드 실행이 제한될 수 있습니다. 예를 들어 Test set이 100개 미만이면 코드가 실행되지 않습니다.
+  - `ADNI` 데이터셋이 아닌 다른 데이터셋을 써도 dataset 부분만 수정하면 실행 가능하도록 (최대한) 코드를 수정했습니다.
+
+- `dataset.py`
+  - `main.py` 파일 내에서 train, valid, test 데이터셋을 생성함에 따라 지정된 데이터를 가져오는 역할만 하도록 간소화했습니다.
+
+- `datasplit.py`
+  - `main.py` 파일 내에서 train, valid, test 데이터셋을 생성함에 따라 pretraining 모드를 위한 데이터셋만 따로 생성하도록 수정했습니다.
+
+- `losses.py`
+  - `GeneralizedSupervisedNTXenLoss`가 multiple meta-data를 고려해 계산될 수 있도록 코드를 수정했습니다.
+  - 각종 하이퍼파라미터를 받아오기 위해 loss 선언 시 `config` 파일을 input으로 추가했습니다.
+  - Multiple meta-data를 고려함에 따라 `sigma`, `alpha_list` 등도 list 객체로 받아옵니다.
+
+- `config.py`
+  - pretraining 모드 관련 객체를 추가했습니다.
+  - `self.label_name`은 각 meta-data의 변수명을 담은 list입니다.
+  - `self.label_type`은 각 meta-data의 type입니다. 변수가 continuous라면 `cont`, catrgorical이면 `cat`으로 입력합니다.
+  - `self.alpha_list`는 각 meta-data의 weight입니다. 총합은 1이 돼야 합니다.
+  - `self.sigma`는 각 meta-data의 sigma parameter입니다.
+
+수정된 코드 실행 예시는 아래와 같습니다.
+```bash
+python3 main.py --mode finetuning --task_names AD/CN --train_num 100 --stratify balan
+python3 main.py --mode pretraining --train_num 100
+```
+
 
 
 ## ADNI Fine-tuning 실험 결과
@@ -135,5 +177,7 @@ python3 main.py --mode finetuning --task_name ADCN --task_target_num 100 --strat
 - [x] First fine-tuning 학습 후 결과 추가하기 (5 tasks)
 - [x] AD vs MCI 학습 후 결과 추가하기 (3 tasks)
 - [x] Representation freeze 하고 학습 후 결과 추가하기 (8 tasks)
-- [ ] ADNI 데이터셋으로 Pre-training 진행하기
-- [ ] Multiple meta-data 활용 방안 확인하기
+- [x] ADNI 데이터셋으로 Pre-training 진행하기
+- [x] dataset.py 등 프레임워크 개선하기
+- [x] Multiple meta-data 활용 프레임워크 구현하기
+- [ ] Categorical loss kernel 구현하기
