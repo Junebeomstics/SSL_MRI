@@ -100,7 +100,9 @@ python3 main.py --mode finetuning --task_name ADCN --task_target_num 100 --strat
 
 ## ADNI Dataset Adaptation (220527 commit `9a56b08`) - wonyoung
 
-**아래는 commit `e2b229b` 에서 수정한 내용입니다.**
+**아래는 commit `e2b229b` 에서 수정한 내용입니다.**  
+**1. Pretraining 모드 실행 가능**  
+**2. Multiple meta-data 입력 가능**  
 
 - `main.py`
   - `main.py` 파일 내에서 train, valid, test 데이터셋을 생성하도록 코드를 추가했습니다.
