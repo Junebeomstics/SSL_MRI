@@ -172,25 +172,25 @@ python3 main.py --mode pretraining --train_num 100
 | :---: | :---: | :---: |
 | (freeze=F) | ACC: 81.2%, AUROC: 0.86 |  | 
 | (freeze=T) | ACC: 72.4%, AUROC: 0.56 |  | 
-| **2. AD vs CN (N=100 balan)** | `DenseNet121_BHB-10K_yAwareContrastive.pth` | `y-Aware_Contrastive_MRI_epoch_99.pth` |
+| **2. AD vs CN (N=100 balan)** |  |  |
 | (freeze=F) | ACC: 69.6%, AUROC: 0.80 |  | 
 | (freeze=T) | ACC: 61.0%, AUROC: 0.68 |  | 
-| **3. AD vs CN (N=500 strat)** | `DenseNet121_BHB-10K_yAwareContrastive.pth` | `y-Aware_Contrastive_MRI_epoch_99.pth` |
+| **3. AD vs CN (N=500 strat)** |  |  |
 | (freeze=F) | ACC: 83.1%, AUROC: 0.89 |  | 
 | (freeze=T) | ACC: 74.0%, AUROC: 0.73 |  | 
-| **4. MCI vs CN (N=100 strat/balan)** | `DenseNet121_BHB-10K_yAwareContrastive.pth` | `y-Aware_Contrastive_MRI_epoch_99.pth` |
+| **4. MCI vs CN (N=100 strat/balan)** |  |  |
 | (freeze=F) | ACC: 53.0%, AUROC: 0.62 |  | 
 | (freeze=T) | ACC: 47.0%, AUROC: 0.43 |  | 
-| **5. MCI vs CN (N=500 strat/baland)** | `DenseNet121_BHB-10K_yAwareContrastive.pth` | `y-Aware_Contrastive_MRI_epoch_99.pth` |
+| **5. MCI vs CN (N=500 strat/baland)** |  |  |
 | (freeze=F) | ACC: 61.1%, AUROC: 0.64 |  | 
 | (freeze=T) | ACC: 55.6%, AUROC: 0.58 |  | 
-| **6. AD vs MCI (N=100 strat)** | `DenseNet121_BHB-10K_yAwareContrastive.pth` | `y-Aware_Contrastive_MRI_epoch_99.pth` |
+| **6. AD vs MCI (N=100 strat)** |  |  |
 | (freeze=F) | ACC: 73.3%, AUROC: 0.66 |  | 
 | (freeze=T) | ACC: 73.7%, AUROC: 0.51 |  | 
-| **7. AD vs MCI (N=100 balan)** | `DenseNet121_BHB-10K_yAwareContrastive.pth` | `y-Aware_Contrastive_MRI_epoch_99.pth` |
+| **7. AD vs MCI (N=100 balan)** |  |  |
 | (freeze=F) | ACC: 56.6%, AUROC: 0.59 |  | 
 | (freeze=T) | ACC: 56.9%, AUROC: 0.58 |  | 
-| **8. AD vs MCI (N=500 strat)** | `DenseNet121_BHB-10K_yAwareContrastive.pth` | `y-Aware_Contrastive_MRI_epoch_99.pth` |
+| **8. AD vs MCI (N=500 strat)** |  |  |
 | (freeze=F) | ACC: 75.1%, AUROC: 0.75 |  | 
 | (freeze=T) | ACC: 73.6%, AUROC: 0.62 |  | 
 
