@@ -18,7 +18,7 @@ The main contributions of our project are as follows:
 
 ## ADNI Dataset Adaptation (220513 commit `6b5f03d`) - wonyoung
 
-ADNI 데이터셋에 맞춘 Pretraining 및 Finetuning 코드를 추가했습니다.
+ADNI 데이터셋에 맞춘 Pretraining 모드 및 Finetuning 모드 코드를 추가했습니다.
 
 `.py` 파일 내에 `# ADNI` (코드 라인), 혹은 `### ADNI` (코드 블록) 표시한 부분이 original 코드에서 수정한 부분입니다.
 
@@ -26,9 +26,9 @@ ADNI 데이터셋에 맞춘 Pretraining 및 Finetuning 코드를 추가했습니
 
 - `main.py`
   - python argument 3개를 추가했습니다.
-  - `--task_name`은 Finetuning task의 이름으로, `AD` 혹은 `MCI`를 입력합니다.
-  - `--task_target_num`은 Finetuning task의 `N_train` 숫자로, `100` 혹은 `500`을 입력합니다.
-  - `--stratify`는 Finetuning task의 `N_train` 숫자의 stratify 여부로, `strat` 혹은 `balan`을 입력합니다.
+  - `--task_name`은 Finetuning 모드 task의 이름으로, `AD` 혹은 `MCI`를 입력합니다.
+  - `--task_target_num`은 Finetuning 모드 task의 `N_train` 숫자로, `100` 혹은 `500`을 입력합니다.
+  - `--stratify`는 Finetuning 모드 task의 `N_train` 숫자의 stratify 여부로, `strat` 혹은 `balan`을 입력합니다.
   - Test dataloader를 추가로 정의하고, AUROC를 산출하는 코드를 추가했습니다.
   - AUROC 은 `figs` 디렉토리에 저장됩니다.
   - 코드 실행 시간을 측정하기 위해 `time` 모듈을 가져왔습니다. 
@@ -36,15 +36,15 @@ ADNI 데이터셋에 맞춘 Pretraining 및 Finetuning 코드를 추가했습니
 - `dataset.py`
   - `MRIDataset` class명을 `ADNI_Dataset`로 변경했습니다.
   - `ADNI_Dataset` class가 `main.py` 실행 시 입력한 python argument 3개를 추가 argument로 받도록 수정했습니다. 이는 python argument에 맞는 데이터셋을 불러오기 위함입니다.
-  - 데이터를 불러오는 코드를 ADNI 데이터셋에 맞게 수정했습니다. Pretraining과 Finetuning을 모두 고려해 수정했습니다.
+  - 데이터를 불러오는 코드를 ADNI 데이터셋에 맞게 수정했습니다. Pretraining 모드와 Finetuning 모드를 모두 고려해 수정했습니다.
 
 - `datasplit.py`
   - `fsdat_baseline.csv` 파일을 Train, Valid, Test로 나누기 위해 새로 추가한 파일입니다.
-  - Finetuning task로 1) AD vs CN, 2) MCI vs CN 두 가지 task를 정의하고 `.csv` 파일을 생성했습니다.
+  - Finetuning 모드 task로 1) AD vs CN, 2) MCI vs CN 두 가지 task를 정의하고 `.csv` 파일을 생성했습니다.
   - 각 task별로 `N_train = 100`과 `N_train = 500`을 나눠서 가정했습니다.
   - AD vs CN의 경우 데이터 불균형이 있어서 `N_train = 100`에 대해 stratification 적용 여부를 다시 나눴습니다.
   - 총 task의 개수는 5개입니다. 자세한 task 구성 정보 및 `.csv` 파일명은 `data_config.txt` 파일을 참고하세요.
-  - Pretraining을 위해 `CN_train.csv`와 `CN_valid.csv`를 생성했습니다.
+  - Pretraining 모드를 위해 `CN_train.csv`와 `CN_valid.csv`를 생성했습니다.
   - `.csv` 파일은 편의상 `csv` 디렉토리에 정리했습니다.
 
 - `yAwareContrastiveLearning.py`
@@ -56,7 +56,7 @@ ADNI 데이터셋에 맞춘 Pretraining 및 Finetuning 코드를 추가했습니
 
 - 기타
   - Early stopping을 위해 `Earlystopping.py`를 추가했습니다.
-  - Finetuning 실행 시 early stopping을 위해 `config.py`에 `self.patience=20`을 추가했습니다.
+  - Finetuning 모드 실행 시 early stopping을 위해 `config.py`에 `self.patience=20`을 추가했습니다.
   - `.sh` 파일은 편의상 `shell` 디렉토리에 정리했습니다.
   - Train 및 Test 결과는 `shell` 디렉토리에 `.txt` 파일을 확인하세요.
   - 코드를 재현하려면 [여기](https://drive.google.com/file/d/1e75JYkaXvLQJhn0Km99iVTzB28AvErh5/view)에서 pretrained 모델을 다운 받으세요.
@@ -73,7 +73,7 @@ python3 main.py --mode finetuning --task_name AD --task_target_num 100 --stratif
 **아래는 commit `6b5f03d` 에서 수정한 내용입니다.**
 
 - `main.py`
-  - `--task_name`은 Finetuning task의 이름으로, AD vs MCI task를 추가함에 따라 `ADCN`, `MCICN`, `ADMCI` 중 하나를 입력합니다.
+  - `--task_name`은 Finetuning 모드 task의 이름으로, AD vs MCI task를 추가함에 따라 `ADCN`, `MCICN`, `ADMCI` 중 하나를 입력합니다.
   - AUROC plot을 두 개 class 모두 생성하도록 코드를 수정했습니다.
 
 - `dataset.py`
@@ -169,7 +169,7 @@ python3 main.py --mode finetuning --train_num 100 --task_name AD/CN --stratify b
 
 
 
-## ADNI Finetuning Test 결과
+## ADNI Finetuning 모드 Test 결과
 - str: stratified / bal: balanced  
 - Baseline: `DenseNet121_BHB-10K_yAwareContrastive.pth`  
 - UKB_age: `y-Aware_Contrastive_MRI_epoch_99.pth`  
@@ -206,10 +206,10 @@ python3 main.py --mode finetuning --train_num 100 --task_name AD/CN --stratify b
 - [x] ADNI Finetuning 모드 실험하기 (5 tasks)
 - [x] AD vs MCI 추가 실험하기 (3 tasks)
 - [x] Representation freeze 하고 실험하기 (8 tasks)
-- [x] ADNI Pretraining 구현하기
+- [x] ADNI Pretraining 모드 구현하기
 - [x] dataset.py 등 프레임워크 개선하기
 - [x] Multiple meta-data 프레임워크 구현하기
 - [x] Finetuning 모드에서 regression task 구현하기
 - [ ] Categorical loss kernel 구현하기
 - [ ] Finetuning 모드에서 layer별로 lr 다르게 적용하기
-- [ ] UKB pretrained weight로 ADNI Finetuning 실험하기
+- [ ] UKB pretrained weight로 ADNI Finetuning 모드 실험하기
