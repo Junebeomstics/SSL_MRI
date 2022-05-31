@@ -165,35 +165,34 @@ python3 main.py --mode pretraining --train_num 100
 ## ADNI Fine-tuning Test 결과 (`DenseNet121_BHB-10K_yAwareContrastive.pth`)
 - strat: stratification  
 - balan: balanced  
-- frz: freeze  
 - Baseline: `DenseNet121_BHB-10K_yAwareContrastive.pth`  
 - UKB_age: `y-Aware_Contrastive_MRI_epoch_99.pth`  
 
 | **1. AD vs CN (N=100 strat)** | Baseline | UKB_age |
 | :---: | :---: | :---: |
-| (frz=F) | ACC: 81.2%, AUROC: 0.86 |  | 
-| (frz=T) | ACC: 72.4%, AUROC: 0.56 |  | 
+| (freeze=F) | ACC: 81.2%, AUROC: 0.86 |  | 
+| (freeze=T) | ACC: 72.4%, AUROC: 0.56 |  | 
 | **2. AD vs CN (N=100 balan)** | `DenseNet121_BHB-10K_yAwareContrastive.pth` | `y-Aware_Contrastive_MRI_epoch_99.pth` |
-| (frz=F) | ACC: 69.6%, AUROC: 0.80 |  | 
-| (frz=T) | ACC: 61.0%, AUROC: 0.68 |  | 
+| (freeze=F) | ACC: 69.6%, AUROC: 0.80 |  | 
+| (freeze=T) | ACC: 61.0%, AUROC: 0.68 |  | 
 | **3. AD vs CN (N=500 strat)** | `DenseNet121_BHB-10K_yAwareContrastive.pth` | `y-Aware_Contrastive_MRI_epoch_99.pth` |
-| (frz=F) | ACC: 83.1%, AUROC: 0.89 |  | 
-| (frz=T) | ACC: 74.0%, AUROC: 0.73 |  | 
+| (freeze=F) | ACC: 83.1%, AUROC: 0.89 |  | 
+| (freeze=T) | ACC: 74.0%, AUROC: 0.73 |  | 
 | **4. MCI vs CN (N=100 strat/balan)** | `DenseNet121_BHB-10K_yAwareContrastive.pth` | `y-Aware_Contrastive_MRI_epoch_99.pth` |
-| (frz=F) | ACC: 53.0%, AUROC: 0.62 |  | 
-| (frz=T) | ACC: 47.0%, AUROC: 0.43 |  | 
+| (freeze=F) | ACC: 53.0%, AUROC: 0.62 |  | 
+| (freeze=T) | ACC: 47.0%, AUROC: 0.43 |  | 
 | **5. MCI vs CN (N=500 strat/baland)** | `DenseNet121_BHB-10K_yAwareContrastive.pth` | `y-Aware_Contrastive_MRI_epoch_99.pth` |
-| (frz=F) | ACC: 61.1%, AUROC: 0.64 |  | 
-| (frz=T) | ACC: 55.6%, AUROC: 0.58 |  | 
+| (freeze=F) | ACC: 61.1%, AUROC: 0.64 |  | 
+| (freeze=T) | ACC: 55.6%, AUROC: 0.58 |  | 
 | **6. AD vs MCI (N=100 strat)** | `DenseNet121_BHB-10K_yAwareContrastive.pth` | `y-Aware_Contrastive_MRI_epoch_99.pth` |
-| (frz=F) | ACC: 73.3%, AUROC: 0.66 |  | 
-| (frz=T) | ACC: 73.7%, AUROC: 0.51 |  | 
+| (freeze=F) | ACC: 73.3%, AUROC: 0.66 |  | 
+| (freeze=T) | ACC: 73.7%, AUROC: 0.51 |  | 
 | **7. AD vs MCI (N=100 balan)** | `DenseNet121_BHB-10K_yAwareContrastive.pth` | `y-Aware_Contrastive_MRI_epoch_99.pth` |
-| (frz=F) | ACC: 56.6%, AUROC: 0.59 |  | 
-| (frz=T) | ACC: 56.9%, AUROC: 0.58 |  | 
+| (freeze=F) | ACC: 56.6%, AUROC: 0.59 |  | 
+| (freeze=T) | ACC: 56.9%, AUROC: 0.58 |  | 
 | **8. AD vs MCI (N=500 strat)** | `DenseNet121_BHB-10K_yAwareContrastive.pth` | `y-Aware_Contrastive_MRI_epoch_99.pth` |
-| (frz=F) | ACC: 75.1%, AUROC: 0.75 |  | 
-| (frz=T) | ACC: 73.6%, AUROC: 0.62 |  | 
+| (freeze=F) | ACC: 75.1%, AUROC: 0.75 |  | 
+| (freeze=T) | ACC: 73.6%, AUROC: 0.62 |  | 
 
 
 ## 주간과제
