@@ -160,6 +160,13 @@ python3 main.py --mode pretraining --train_num 100
 - `yAwareContrastiveLearning.py`
   - finetuning 모드의 task에 따라 데이터 타입을 조정하기 위해 조건문을 일부 추가했습니다.
 
+수정된 코드 실행 예시는 아래와 같습니다.
+```bash
+python3 main.py --mode pretraining --train_num 100
+python3 main.py --mode finetuning --train_num 100 --task_name PTAGE
+python3 main.py --mode finetuning --train_num 100 --task_name AD/CN --stratify balan
+```
+
 
 
 ## ADNI Fine-tuning Test 결과
