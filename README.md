@@ -163,11 +163,11 @@ python3 main.py --mode pretraining --train_num 100
 
 
 ## ADNI Fine-tuning Test 결과 (`DenseNet121_BHB-10K_yAwareContrastive.pth`)
-strat: stratification  
-balab: balanced  
-frz: freeze  
-Baseline: `DenseNet121_BHB-10K_yAwareContrastive.pth`
-UKB_age: `y-Aware_Contrastive_MRI_epoch_99.pth`
+- strat: stratification  
+- balan: balanced  
+- frz: freeze  
+- Baseline: `DenseNet121_BHB-10K_yAwareContrastive.pth`  
+- UKB_age: `y-Aware_Contrastive_MRI_epoch_99.pth`  
 
 | **1. AD vs CN (N=100 strat)** | Baseline | UKB_age |
 | :---: | :---: | :---: |
