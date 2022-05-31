@@ -163,7 +163,8 @@ python3 main.py --mode pretraining --train_num 100
 
 
 ## ADNI Fine-tuning 실험 결과 (`DenseNet121_BHB-10K_yAwareContrastive.pth`)
-1. AD vs CN (N=100 stratified)  
+| 1. AD vs CN (N=100 stratified)  | `DenseNet121_BHB-10K_yAwareContrastive.pth | y-Aware_Contrastive_MRI_epoch_99.pyh |
+| --- | --- | --- |
 | (freeze=F) | Test ACC: 81.21% | Test AUROC: 0.8606 | 
 | (freeze=T) | Test ACC: 72.37% | Test AUROC: 0.5570 | 
 
@@ -206,4 +207,4 @@ python3 main.py --mode pretraining --train_num 100
 - [x] Finetuning 모드에서 regression task 고려하기
 - [ ] Categorical loss kernel 구현하기
 - [ ] Finetuning 모드에서 layer별로 lr 다르게 적용하기
-- [ ] 
+- [ ] UKBB pretrained weight로 ADNI Fine-tuning 실험하기
