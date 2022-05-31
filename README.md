@@ -150,15 +150,15 @@ python3 main.py --mode pretraining --train_num 100
   - finetuning 모드에서 regression task를 고려할 수 있도록 수정했습니다.
   - Regression task도 training sample 수를 조절할 수 있지만, stratification 여부는 고려하지 않았습니다.
   - Regression task의 loss는 `MSELoss`를 쓰도록 설정했습니다.
-  - `--task_names`은 `--task_name`로 수정했습니다. 
+  - Regression task는 `MSE`, `MAE`, `RMSE` 등 metric을 산출합니다.
+  - `--task_names`를 `--task_name`로 수정했습니다. 
 
 - `config.py`
-  - finetuning 모드에서 regression task 관련 객체를 추가했습니다.
-  - finetuning 모드에서 task에 따라 `task_type`을 설정하도록 추가했습니다. 분류 task에는 `cls`를, 회귀 task에는 `reg`을 입력합니다.
-  - `self.num_classes`는 분류 task에는 `2`를, 회귀 task에는 `1`을 입력합니다.
+  - finetuning 모드에서 task 종류에 따라 `task_type`을 설정하도록 추가했습니다. 분류 task에는 `cls`를, 회귀 task에는 `reg`을 입력합니다.
+  - `self.num_classes`는 classification task에는 `2`를, regression task에는 `1`을 입력합니다.
   
 - `yAwareContrastiveLearning.py`
-  - finetuning 모드의 task에 따라 데이터 타입을 조정하기 위해 조건문을 일부 추가했습니다.
+  - finetuning 모드에서 `task_type`에 따라 데이터 타입을 조정하기 위해 조건문을 일부 추가했습니다.
 
 수정된 코드 실행 예시는 아래와 같습니다.
 ```bash
@@ -170,33 +170,33 @@ python3 main.py --mode finetuning --train_num 100 --task_name AD/CN --stratify b
 
 
 ## ADNI Fine-tuning Test 결과
-- strat: stratification / balan: balanced  
+- str: stratified / bal: balanced  
 - Baseline: `DenseNet121_BHB-10K_yAwareContrastive.pth`  
 - UKB_age: `y-Aware_Contrastive_MRI_epoch_99.pth`  
 
-| **1. AD vs CN (N=100 balan)** | Baseline | UKB_age |
+| **1. AD vs CN (N=100 bal)** | Baseline | UKB_age |
 | :---: | :---: | :---: |
 | (freeze=F) | ACC: 69.6%, AUC: 0.80 |  | 
 | (freeze=T) | ACC: 61.0%, AUC: 0.68 |  | 
-| **2. AD vs CN (N=100 strat)** |  |  |
+| **2. AD vs CN (N=100 str)** |  |  |
 | (freeze=F) | ACC: 81.2%, AUC: 0.86 |  | 
 | (freeze=T) | ACC: 72.4%, AUC: 0.56 |  | 
-| **3. AD vs CN (N=500 strat)** |  |  |
+| **3. AD vs CN (N=500 str)** |  |  |
 | (freeze=F) | ACC: 83.1%, AUC: 0.89 |  | 
 | (freeze=T) | ACC: 74.0%, AUC: 0.73 |  | 
-| **4. AD vs MCI (N=100 balan)** |  |  |
+| **4. AD vs MCI (N=100 bal)** |  |  |
 | (freeze=F) | ACC: 56.6%, AUC: 0.59 |  | 
 | (freeze=T) | ACC: 56.9%, AUC: 0.58 |  | 
-| **5. AD vs MCI (N=100 strat)** |  |  |
+| **5. AD vs MCI (N=100 str)** |  |  |
 | (freeze=F) | ACC: 73.3%, AUC: 0.66 |  | 
 | (freeze=T) | ACC: 73.7%, AUC: 0.51 |  | 
-| **6. AD vs MCI (N=500 strat)** |  |  |
+| **6. AD vs MCI (N=500 str)** |  |  |
 | (freeze=F) | ACC: 75.1%, AUC: 0.75 |  | 
 | (freeze=T) | ACC: 73.6%, AUC: 0.62 |  | 
-| **7. MCI vs CN (N=100 strat/balan)** |  |  |
+| **7. MCI vs CN (N=100 str/bal)** |  |  |
 | (freeze=F) | ACC: 53.0%, AUC: 0.62 |  | 
 | (freeze=T) | ACC: 47.0%, AUC: 0.43 |  | 
-| **8. MCI vs CN (N=500 strat/balan)** |  |  |
+| **8. MCI vs CN (N=500 str/bal)** |  |  |
 | (freeze=F) | ACC: 61.1%, AUC: 0.64 |  | 
 | (freeze=T) | ACC: 55.6%, AUC: 0.58 |  | 
 
