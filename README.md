@@ -169,33 +169,33 @@ python3 main.py --mode pretraining --train_num 100
 
 | **1. AD vs CN (N=100 strat)** | Baseline | UKB_age |
 | :---: | :---: | :---: |
-| (freeze=F) | ACC: 81.2%, AUROC: 0.86 |  | 
-| (freeze=T) | ACC: 72.4%, AUROC: 0.56 |  | 
+| (freeze=F) | ACC: 81.2%, AUC: 0.86 |  | 
+| (freeze=T) | ACC: 72.4%, AUC: 0.56 |  | 
 | **2. AD vs CN (N=100 balan)** |  |  |
-| (freeze=F) | ACC: 69.6%, AUROC: 0.80 |  | 
-| (freeze=T) | ACC: 61.0%, AUROC: 0.68 |  | 
+| (freeze=F) | ACC: 69.6%, AUC: 0.80 |  | 
+| (freeze=T) | ACC: 61.0%, AUC: 0.68 |  | 
 | **3. AD vs CN (N=500 strat)** |  |  |
-| (freeze=F) | ACC: 83.1%, AUROC: 0.89 |  | 
-| (freeze=T) | ACC: 74.0%, AUROC: 0.73 |  | 
+| (freeze=F) | ACC: 83.1%, AUC: 0.89 |  | 
+| (freeze=T) | ACC: 74.0%, AUC: 0.73 |  | 
 | **4. MCI vs CN (N=100 strat/balan)** |  |  |
-| (freeze=F) | ACC: 53.0%, AUROC: 0.62 |  | 
-| (freeze=T) | ACC: 47.0%, AUROC: 0.43 |  | 
+| (freeze=F) | ACC: 53.0%, AUC: 0.62 |  | 
+| (freeze=T) | ACC: 47.0%, AUC: 0.43 |  | 
 | **5. MCI vs CN (N=500 strat/balan)** |  |  |
-| (freeze=F) | ACC: 61.1%, AUROC: 0.64 |  | 
-| (freeze=T) | ACC: 55.6%, AUROC: 0.58 |  | 
+| (freeze=F) | ACC: 61.1%, AUC: 0.64 |  | 
+| (freeze=T) | ACC: 55.6%, AUC: 0.58 |  | 
 | **6. AD vs MCI (N=100 strat)** |  |  |
-| (freeze=F) | ACC: 73.3%, AUROC: 0.66 |  | 
-| (freeze=T) | ACC: 73.7%, AUROC: 0.51 |  | 
+| (freeze=F) | ACC: 73.3%, AUC: 0.66 |  | 
+| (freeze=T) | ACC: 73.7%, AUC: 0.51 |  | 
 | **7. AD vs MCI (N=100 balan)** |  |  |
-| (freeze=F) | ACC: 56.6%, AUROC: 0.59 |  | 
-| (freeze=T) | ACC: 56.9%, AUROC: 0.58 |  | 
+| (freeze=F) | ACC: 56.6%, AUC: 0.59 |  | 
+| (freeze=T) | ACC: 56.9%, AUC: 0.58 |  | 
 | **8. AD vs MCI (N=500 strat)** |  |  |
-| (freeze=F) | ACC: 75.1%, AUROC: 0.75 |  | 
-| (freeze=T) | ACC: 73.6%, AUROC: 0.62 |  | 
+| (freeze=F) | ACC: 75.1%, AUC: 0.75 |  | 
+| (freeze=T) | ACC: 73.6%, AUC: 0.62 |  | 
 
 
 ## 주간과제
-- [x] First fine-tuning 학습 후 결과 추가하기 (5 tasks)
+- [x] Finetuning 모드 결과 추가하기 (5 tasks)
 - [x] AD vs MCI 학습 후 결과 추가하기 (3 tasks)
 - [x] Representation freeze 하고 학습 후 결과 추가하기 (8 tasks)
 - [x] ADNI 데이터셋으로 Pre-training 진행하기
