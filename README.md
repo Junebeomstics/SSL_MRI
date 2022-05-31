@@ -164,42 +164,27 @@ python3 main.py --mode pretraining --train_num 100
 
 ## ADNI Fine-tuning 실험 결과 (`DenseNet121_BHB-10K_yAwareContrastive.pth`)
 | 1. AD vs CN (N=100 stratified) | `DenseNet121_BHB-10K_yAwareContrastive.pth` | `y-Aware_Contrastive_MRI_epoch_99.pth` |
-| --- | --- | --- |
 | (freeze=F) | Test ACC: 81.21%, Test AUROC: 0.8606 |  | 
 | (freeze=T) | Test ACC: 72.37%, Test AUROC: 0.5570 |  | 
-
 | 2. AD vs CN (N=100 balanced) | `DenseNet121_BHB-10K_yAwareContrastive.pth` | `y-Aware_Contrastive_MRI_epoch_99.pth` |
-| --- | --- | --- |
 | (freeze=F) | Test ACC: 69.63%, Test AUROC: 0.8009 |  | 
 | (freeze=T) | Test ACC: 60.96%, Test AUROC: 0.6829 |  | 
-
 | 3. AD vs CN (N=500 stratified) | `DenseNet121_BHB-10K_yAwareContrastive.pth` | `y-Aware_Contrastive_MRI_epoch_99.pth` |
-| --- | --- | --- |
 | (freeze=F) | Test ACC: 83.05%, Test AUROC: 0.8937 |  | 
 | (freeze=T) | Test ACC: 73.99%, Test AUROC: 0.7288 |  | 
- 
 | 4. MCI vs CN (N=100 stratified/balanced) | `DenseNet121_BHB-10K_yAwareContrastive.pth` | `y-Aware_Contrastive_MRI_epoch_99.pth` |
-| --- | --- | --- |
 | (freeze=F) | Test ACC: 53.03%, Test AUROC: 0.6209 |  | 
 | (freeze=T) | Test ACC: 47.04%, Test AUROC: 0.4343 |  | 
-
 | 5. MCI vs CN (N=500 stratified/balanced) | `DenseNet121_BHB-10K_yAwareContrastive.pth` | `y-Aware_Contrastive_MRI_epoch_99.pth` |
-| --- | --- | --- |
 | (freeze=F) | Test ACC: 61.12%, Test AUROC: 0.6445 |  | 
 | (freeze=T) | Test ACC: 55.62%, Test AUROC: 0.5842 |  | 
-
 | 6. AD vs MCI (N=100 stratified) | `DenseNet121_BHB-10K_yAwareContrastive.pth` | `y-Aware_Contrastive_MRI_epoch_99.pth` |
-| --- | --- | --- |
 | (freeze=F) | Test ACC: 73.31%, Test AUROC: 0.6590 |  | 
 | (freeze=T) | Test ACC: 73.73%, Test AUROC: 0.5100 |  | 
-
 | 7. AD vs MCI (N=100 balanced) | `DenseNet121_BHB-10K_yAwareContrastive.pth` | `y-Aware_Contrastive_MRI_epoch_99.pth` |
-| --- | --- | --- |
 | (freeze=F) | Test ACC: 56.62%, Test AUROC: 0.5862 |  | 
 | (freeze=T) | Test ACC: 56.85%, Test AUROC: 0.5820 |  | 
-
 | 8. AD vs MCI (N=500 stratified) | `DenseNet121_BHB-10K_yAwareContrastive.pth` | `y-Aware_Contrastive_MRI_epoch_99.pth` |
-| --- | --- | --- |
 | (freeze=F) | Test ACC: 75.05%, Test AUROC: 0.7505 |  | 
 | (freeze=T) | Test ACC: 73.56%, Test AUROC: 0.6197 |  | 
 
