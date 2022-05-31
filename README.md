@@ -180,7 +180,7 @@ python3 main.py --mode pretraining --train_num 100
 | **4. MCI vs CN (N=100 strat/balan)** |  |  |
 | (freeze=F) | ACC: 53.0%, AUROC: 0.62 |  | 
 | (freeze=T) | ACC: 47.0%, AUROC: 0.43 |  | 
-| **5. MCI vs CN (N=500 strat/baland)** |  |  |
+| **5. MCI vs CN (N=500 strat/balan)** |  |  |
 | (freeze=F) | ACC: 61.1%, AUROC: 0.64 |  | 
 | (freeze=T) | ACC: 55.6%, AUROC: 0.58 |  | 
 | **6. AD vs MCI (N=100 strat)** |  |  |
