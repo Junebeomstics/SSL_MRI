@@ -106,13 +106,13 @@ python3 main.py --mode finetuning --task_name ADCN --task_target_num 100 --strat
 
 - `main.py`
   - `main.py` 파일 내에서 train, valid, test 데이터셋을 생성하도록 코드를 추가했습니다.
-  - 기존처럼 strarification 여부, training sample 수를 조절할 수 있습니다.
+  - 기존처럼 stratification 여부, training sample 수를 조절할 수 있습니다.
   - `--task_name`은 `--task_names`로 수정했습니다. 
   - `--task_names`는 fine-tuning mode 실행 시에만 argument를 입력하며, `AD/CN`, `MCI/CN`, `AD/MCI` 등과 같이 class label 2개를 `/`로 구분하여 입력합니다.
   - `--task_target_num`은 `--train_num`으로 수정했습니다.
   - `--train_num`은 어떤 mode로 실행해도 argument를 입력해야 합니다. Pretraining 모드에서도 training sample 수로 반영됩니다.
   - `--train_num`은 이제 100이나 500 등 고정된 숫자를 입력할 필요가 없습니다. 
-  - 단, strarification 여부 등 일부 조건 등에 의해 코드 실행이 제한될 수 있습니다. 예를 들어 Test set이 100개 미만이면 코드가 실행되지 않습니다.
+  - 단, stratification 여부 등 일부 조건 등에 의해 코드 실행이 제한될 수 있습니다. 예를 들어 Test set이 100개 미만이면 코드가 실행되지 않습니다.
   - `ADNI` 데이터셋이 아닌 다른 데이터셋을 써도 dataset 부분만 수정하면 실행 가능하도록 (최대한) 코드를 수정했습니다.
 
 - `dataset.py`
@@ -141,10 +141,31 @@ python3 main.py --mode pretraining --train_num 100
 
 
 
-## ADNI Fine-tuning 실험 결과
+## ADNI Dataset Adaptation (220603 commit `-`) - wonyoung
+
+**아래는 commit `9a56b08` 에서 수정한 내용입니다. 주요 변경 사항은 다음과 같습니다.**  
+**1. Finetuning 모드 regression task 실행 가능**  
+
+- `main.py`
+  - finetuning 모드에서 regression task를 고려할 수 있도록 수정했습니다.
+  - Regression task도 training sample 수를 조절할 수 있지만, stratification 여부는 고려하지 않았습니다.
+  - Regression task의 loss는 `MSELoss`를 쓰도록 설정했습니다.
+  - `--task_names`은 `--task_name`로 수정했습니다. 
+
+- `config.py`
+  - finetuning 모드에서 regression task 관련 객체를 추가했습니다.
+  - finetuning 모드에서 task에 따라 `task_type`을 설정하도록 추가했습니다. 분류 task에는 `cls`를, 회귀 task에는 `reg`을 입력합니다.
+  - `self.num_classes`는 분류 task에는 `2`를, 회귀 task에는 `1`을 입력합니다.
+  
+- `yAwareContrastiveLearning.py`
+  - finetuning 모드의 task에 따라 데이터 타입을 조정하기 위해 조건문을 일부 추가했습니다.
+
+
+
+## ADNI Fine-tuning 실험 결과 (`DenseNet121_BHB-10K_yAwareContrastive.pth`)
 1. AD vs CN (N=100 stratified)  
-(freeze=F) Test ACC: 81.21%, Test AUROC: 0.8606  
-(freeze=T) Test ACC: 72.37%, Test AUROC: 0.5570  
+| (freeze=F) | Test ACC: 81.21% | Test AUROC: 0.8606 | 
+| (freeze=T) | Test ACC: 72.37% | Test AUROC: 0.5570 | 
 
 2. AD vs CN (N=100 balanced)  
 (freeze=F) Test ACC: 69.63%, Test AUROC: 0.8009  
@@ -182,4 +203,7 @@ python3 main.py --mode pretraining --train_num 100
 - [x] ADNI 데이터셋으로 Pre-training 진행하기
 - [x] dataset.py 등 프레임워크 개선하기
 - [x] Multiple meta-data 활용 프레임워크 구현하기
+- [x] Finetuning 모드에서 regression task 고려하기
 - [ ] Categorical loss kernel 구현하기
+- [ ] Finetuning 모드에서 layer별로 lr 다르게 적용하기
+- [ ] 
