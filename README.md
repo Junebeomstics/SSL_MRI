@@ -164,7 +164,7 @@ python3 main.py --mode pretraining --train_num 100
 
 ## ADNI Fine-tuning 실험 결과 (`DenseNet121_BHB-10K_yAwareContrastive.pth`)
 | 1. AD vs CN (N=100 stratified) | `DenseNet121_BHB-10K_yAwareContrastive.pth` | `y-Aware_Contrastive_MRI_epoch_99.pth` |
-| --- | --- | --- |
+| :---: | --- | --- |
 | (freeze=F) | Test ACC: 81.21%, Test AUROC: 0.8606 |  | 
 | (freeze=T) | Test ACC: 72.37%, Test AUROC: 0.5570 |  | 
 | 2. AD vs CN (N=100 balanced) | `DenseNet121_BHB-10K_yAwareContrastive.pth` | `y-Aware_Contrastive_MRI_epoch_99.pth` |
