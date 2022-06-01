@@ -24,6 +24,9 @@ The main contributions of our project are as follows:
 ![image](https://user-images.githubusercontent.com/64460370/171386568-6f6ccc56-698d-4fe8-9ce5-2df10e8a235c.png)
 ![ADNI_ADMCI_strat_100_ROC](https://user-images.githubusercontent.com/64460370/171386768-6871204b-24dd-4e11-83b7-63b21231543a.png)
 
+early stopping
+![image](https://user-images.githubusercontent.com/64460370/171390754-8c830e71-5616-41dc-953a-846795d1a90f.png)
+
 
 str: stratified / bal: balanced 
 | **1. AD vs CN (N=100 str)** | Baseline | UKB_age |
