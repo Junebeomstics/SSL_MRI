@@ -16,14 +16,15 @@ The main contributions of our project are as follows:
 
 
 ## ADNI Supervised Learning Test 결과
-- str: stratified / bal: balanced  
-
+- str: stratified / bal: balanced 
+- **1. AD vs CN (N=100 str)**  
+- ![image](https://user-images.githubusercontent.com/64460370/171373516-667f11dd-f4e2-44af-ace5-fea17f7ef142.png)
+- ![ADNI_ADCN_strat_100_ROC](https://user-images.githubusercontent.com/64460370/171373908-bf23c7db-e162-4fd0-9d2c-6e48adbd4a26.png)
+- "/home/yeon/anaconda3/envs/2022class/meta-learn/SSL_MRI-wonyoung/SSL_MRI-wonyoung/ckpts/ADNI_ADCN_strat_100.pt"
 | **1. AD vs CN (N=100 str)** | Baseline | UKB_age |
 | :---: | :---: | :---: |
-| (freeze=F) | ACC: 69.6%, AUC: 0.80 |  | 
+| (freeze=F) | Test loss: 0.5045, Test accuracy: 74.38%, MEAN/AD/CN: 0.7766 |  | 
 | (freeze=T) | ACC: 61.0%, AUC: 0.68 |  | 
-![image](https://user-images.githubusercontent.com/64460370/171373516-667f11dd-f4e2-44af-ace5-fea17f7ef142.png)
-
 | **2. AD vs CN (N=100 str)** |  |  |
 | (freeze=F) | ACC: 81.2%, AUC: 0.86 |  | 
 | (freeze=T) | ACC: 72.4%, AUC: 0.56 |  | 
