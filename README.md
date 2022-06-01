@@ -20,6 +20,11 @@ The main contributions of our project are as follows:
 ![image](https://user-images.githubusercontent.com/64460370/171373516-667f11dd-f4e2-44af-ace5-fea17f7ef142.png)
 ![ADNI_ADCN_strat_100_ROC](https://user-images.githubusercontent.com/64460370/171373908-bf23c7db-e162-4fd0-9d2c-6e48adbd4a26.png)
 "/home/yeon/anaconda3/envs/2022class/meta-learn/SSL_MRI-wonyoung/SSL_MRI-wonyoung/ckpts/ADNI_ADCN_strat_100.pt"
+
+![image](https://user-images.githubusercontent.com/64460370/171386568-6f6ccc56-698d-4fe8-9ce5-2df10e8a235c.png)
+![ADNI_ADMCI_strat_100_ROC](https://user-images.githubusercontent.com/64460370/171386768-6871204b-24dd-4e11-83b7-63b21231543a.png)
+
+
 str: stratified / bal: balanced 
 | **1. AD vs CN (N=100 str)** | Baseline | UKB_age |
 | :---: | :---: | :---: |
