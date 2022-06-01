@@ -13,3 +13,35 @@ The main contributions of our project are as follows:
 - we verify the contribution of several transformation methods to make positive samples in self supervised learning.
 - we compare the performances of famous baseline models such as Simclr, Moco, Model Genesis.
 - we develop new framework that can integrate the self-supervised learning process with multi-task learning
+
+
+## ADNI Supervised Learning Test 결과
+- str: stratified / bal: balanced  
+
+| **1. AD vs CN (N=100 str)** | Baseline | UKB_age |
+| :---: | :---: | :---: |
+| (freeze=F) | ACC: 69.6%, AUC: 0.80 |  | 
+| (freeze=T) | ACC: 61.0%, AUC: 0.68 |  | 
+![image](https://user-images.githubusercontent.com/64460370/171373516-667f11dd-f4e2-44af-ace5-fea17f7ef142.png)
+
+| **2. AD vs CN (N=100 str)** |  |  |
+| (freeze=F) | ACC: 81.2%, AUC: 0.86 |  | 
+| (freeze=T) | ACC: 72.4%, AUC: 0.56 |  | 
+| **3. AD vs CN (N=500 str)** |  |  |
+| (freeze=F) | ACC: 83.1%, AUC: 0.89 |  | 
+| (freeze=T) | ACC: 74.0%, AUC: 0.73 |  | 
+| **4. AD vs MCI (N=100 bal)** |  |  |
+| (freeze=F) | ACC: 56.6%, AUC: 0.59 |  | 
+| (freeze=T) | ACC: 56.9%, AUC: 0.58 |  | 
+| **5. AD vs MCI (N=100 str)** |  |  |
+| (freeze=F) | ACC: 73.3%, AUC: 0.66 |  | 
+| (freeze=T) | ACC: 73.7%, AUC: 0.51 |  | 
+| **6. AD vs MCI (N=500 str)** |  |  |
+| (freeze=F) | ACC: 75.1%, AUC: 0.75 |  | 
+| (freeze=T) | ACC: 73.6%, AUC: 0.62 |  | 
+| **7. MCI vs CN (N=100 str/bal)** |  |  |
+| (freeze=F) | ACC: 53.0%, AUC: 0.62 |  | 
+| (freeze=T) | ACC: 47.0%, AUC: 0.43 |  | 
+| **8. MCI vs CN (N=500 str/bal)** |  |  |
+| (freeze=F) | ACC: 61.1%, AUC: 0.64 |  | 
+| (freeze=T) | ACC: 55.6%, AUC: 0.58 |  | 
