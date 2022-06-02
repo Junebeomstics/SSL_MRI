@@ -212,6 +212,6 @@ python3 main.py --mode finetuning --train_num 100 --task_name AD/CN --stratify b
 - [x] Multiple meta-data 프레임워크 구현하기
 - [x] Finetuning 모드에서 regression task 구현하기
 - [x] Reproducibility 구현하기
+- [x] UKB pretrained weight로 ADNI Finetuning 모드 실험하기
 - [ ] Categorical loss kernel 구현하기
 - [ ] Finetuning 모드에서 layer별로 lr 다르게 적용하기
-- [ ] UKB pretrained weight로 ADNI Finetuning 모드 실험하기
