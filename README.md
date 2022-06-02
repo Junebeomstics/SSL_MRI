@@ -151,7 +151,8 @@ python3 main.py --mode pretraining --train_num 100
   - Regression task도 training sample 수를 조절할 수 있지만, stratification 여부는 고려하지 않았습니다.
   - Regression task의 loss는 `MSELoss`를 쓰도록 설정했습니다.
   - Regression task는 `MSE`, `MAE`, `RMSE` 등 metric을 산출합니다.
-  - `--task_names`를 `--task_name`로 수정했습니다. 
+  - `--task_names`를 `--task_name`로 수정했습니다.
+  - `--random_seed`를 argument로 지정해 같은 실험을 재현할 수 있습니다.
 
 - `config.py`
   - Finetuning 모드에서 task 종류에 따라 `task_type`을 설정하도록 추가했습니다. 분류 task에는 `cls`를, 회귀 task에는 `reg`을 입력합니다.
@@ -162,9 +163,9 @@ python3 main.py --mode pretraining --train_num 100
 
 수정된 코드 실행 예시는 아래와 같습니다.
 ```bash
-python3 main.py --mode pretraining --train_num 100
-python3 main.py --mode finetuning --train_num 100 --task_name PTAGE
-python3 main.py --mode finetuning --train_num 100 --task_name AD/CN --stratify balan
+python3 main.py --mode pretraining --train_num 100 --random_seed 0
+python3 main.py --mode finetuning --train_num 100 --task_name PTAGE --random_seed 0
+python3 main.py --mode finetuning --train_num 100 --task_name AD/CN --stratify balan --random_seed 0
 ```
 
 
@@ -210,6 +211,7 @@ python3 main.py --mode finetuning --train_num 100 --task_name AD/CN --stratify b
 - [x] dataset.py 등 프레임워크 개선하기
 - [x] Multiple meta-data 프레임워크 구현하기
 - [x] Finetuning 모드에서 regression task 구현하기
+- [x] Reproducibility 구현하기
 - [ ] Categorical loss kernel 구현하기
 - [ ] Finetuning 모드에서 layer별로 lr 다르게 적용하기
 - [ ] UKB pretrained weight로 ADNI Finetuning 모드 실험하기
