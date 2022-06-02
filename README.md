@@ -26,13 +26,14 @@ The main contributions of our project are as follows:
 
 early stopping
 ![image](https://user-images.githubusercontent.com/64460370/171390754-8c830e71-5616-41dc-953a-846795d1a90f.png)
+![image](https://user-images.githubusercontent.com/64460370/171563888-47844981-ce9b-4ff3-93f8-c7dac2295215.png)
 
 
 str: stratified / bal: balanced 
 | **1. AD vs CN (N=100 str)** | Baseline | UKB_age |
 | :---: | :---: | :---: |
 | (freeze=F) | Test loss: 0.5045, Test accuracy: 74.38%, MEAN/AD/CN: 0.7766 |  | 
-| (freeze=T) | ACC: 61.0%, AUC: 0.68 |  | 
-| **2. AD vs CN (N=100 str)** |  |  |
-| (freeze=F) | ACC: 81.2%, AUC: 0.86 |  | 
-| (freeze=T) | ACC: 72.4%, AUC: 0.56 |  | 
+| **2. AD vs MCI (N=100 str)** |  |  |
+| (freeze=F) |Test loss: 0.5866, Test accuracy: 73.73%, MEAN/AD/CN: 0.5130  |  | 
+| **3. MCI vs CN (N=100 str)** |  |  |
+| (freeze=F) |Test loss: 0.6953, Test accuracy: 47.25%, MEAN/AD/CN: 0.4603  |  | 
