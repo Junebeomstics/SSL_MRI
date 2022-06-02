@@ -177,7 +177,7 @@ python3 main.py --mode finetuning --train_num 100 --task_name AD/CN --stratify b
 | **1. AD vs CN (N=100 bal)** | Baseline | UKB_age |
 | :---: | :---: | :---: |
 | (freeze=F) | ACC: 69.6%, AUC: 0.80 | ACC: 75.1%, AUC: 0.83 | 
-| (freeze=T) | ACC: 61.0%, AUC: 0.68 |  | 
+| (freeze=T) | ACC: 61.0%, AUC: 0.68 | ACC: 68.7%, AUC: 0.73 | 
 | **2. AD vs CN (N=100 str)** |  |  |
 | (freeze=F) | ACC: 81.2%, AUC: 0.86 | ACC: 81.8%, AUC: 0.83 | 
 | (freeze=T) | ACC: 72.4%, AUC: 0.56 | ACC: 73.9%, AUC: 0.72 | 
