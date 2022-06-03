@@ -25,7 +25,6 @@ class yAwareCLModel:
         self.loss = loss
         self.model = net
         ### ADNI
-        print('config.mode:', config.mode)
         if config.mode == 0: # PRETRAINING
             self.optimizer = torch.optim.Adam(net.parameters(), lr=config.lr, weight_decay=config.weight_decay)
         else: # config.mode == 1: # FINE_TUNING

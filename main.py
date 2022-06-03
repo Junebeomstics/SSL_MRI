@@ -27,7 +27,7 @@ from scipy import stats
 if __name__ == "__main__":
     now = datetime.datetime.now()
     nowDatetime = now.strftime('%Y-%m-%d %H:%M:%S') # ADNI
-    print("main.py started at {0}".format(nowDatetime))
+    print("[main.py started at {0}]".format(nowDatetime))
     start_time = time.time() # ADNI
     parser = argparse.ArgumentParser()
     parser.add_argument("--mode", type=str, choices=["pretraining", "finetuning"], required=True,
@@ -257,15 +257,17 @@ if __name__ == "__main__":
                 ax[i].set_ylabel('True Positive Rate')
                 ax[i].set_xlabel('False Positive Rate')
             
-            if config.freeze:
-                freezed = 'f'
+            if config.layer_control == 'tune_all':
+                control = 'a'
+            elif config.layer_control == 'freeze':
+                control = 'f'
             else:
-                freezed = ''
+                control = 'd'
             plt.savefig('./figs/{0}_ADNI_{1}{2}{3}_{4}_ROC.png'.format(str(datetime.datetime.now())[2:10].replace('-', ''),
                                                                        args.task_name.replace('/', ''), 
                                                                        str(args.train_num)[0], 
                                                                        args.stratify[0], 
-                                                                       freezed), dpi = 100)
+                                                                       control), dpi = 100)
             plt.close()
         else: # config.task_type == 'reg':
             outGTnp = outGT.cpu().numpy()
@@ -280,5 +282,5 @@ if __name__ == "__main__":
     print('\nTotal', round((end_time - start_time) / 60), 'minutes elapsed.')
     now = datetime.datetime.now()
     nowDatetime = now.strftime('%Y-%m-%d %H:%M:%S') # ADNI
-    print("main.py finished at {0}".format(nowDatetime))
+    print("[main.py finished at {0}]".format(nowDatetime))
     ###

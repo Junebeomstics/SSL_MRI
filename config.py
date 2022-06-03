@@ -14,7 +14,7 @@ class Config:
             self.nb_epochs_per_saving = 1
             self.pin_mem = True
             self.num_cpu_workers = 8
-            self.nb_epochs = 3 # ADNI
+            self.nb_epochs = 100 # ADNI #####
             self.cuda = True
             # Optimizer
             self.lr = 1e-4
@@ -27,7 +27,7 @@ class Config:
             self.data = './adni_t1s_baseline' # ADNI
             self.label = './csv/fsdat_baseline_CN.csv' # ADNI
             self.valid_ratio = 0.25 # ADNI (valid set ratio compared to training set)
-            self.input_size = (1, 121, 145, 121) # ADNI
+            self.input_size = (1, 80, 80, 80) # ADNI #####
             
             self.label_name = ['PTAGE', 'PTGENDER'] # ADNI
             self.label_type = ['cont', 'cat'] # ADNI
@@ -56,10 +56,10 @@ class Config:
             self.valid_ratio = 0.25 # ADNI (valid set ratio compared to training set)
             self.input_size = (1, 80, 80, 80) # ADNI
 
-            self.task_type = 'cls' # ADNI # 'cls' or 'reg'
-            self.label_name = 'Dx.new' # ADNI # `Dx.new`
-            self.num_classes = 2 # ADNI - AD vs CN or MCI vs CN or AD vs MCI or reg
+            self.task_type = 'cls' # ADNI # 'cls' or 'reg' #####
+            self.label_name = 'Dx.new' # ADNI # `Dx.new` #####
+            self.num_classes = 2 # ADNI - AD vs CN or MCI vs CN or AD vs MCI or reg #####
 
-            self.pretrained_path = './weights/y-Aware_Contrastive_MRI_epoch_99_age.pth' # ADNI
-            self.layer_control = 'tune_all' # ADNI # 'freeze' or 'tune_diff' (whether to freeze pretrained layers or not)
+            self.pretrained_path = './weights/y-Aware_Contrastive_MRI_epoch_99_age.pth' # ADNI #####
+            self.layer_control = 'tune_all' # ADNI # 'freeze' or 'tune_diff' (whether to freeze pretrained layers or not) #####
             self.patience = 20 # ADNI
