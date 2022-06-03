@@ -141,7 +141,7 @@ python3 main.py --mode pretraining --train_num 100
 
 
 
-## ADNI Dataset Adaptation (220603 commit `-`) - wonyoung
+## ADNI Dataset Adaptation (220603 commit `ff6710d`) - wonyoung
 
 **아래는 commit `9a56b08` 에서 수정한 내용입니다. 주요 변경 사항은 다음과 같습니다.**  
 **1. Finetuning 모드에서 regression task 실행 가능**  
