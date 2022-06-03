@@ -144,10 +144,13 @@ python3 main.py --mode pretraining --train_num 100
 ## ADNI Dataset Adaptation (220603 commit `-`) - wonyoung
 
 **아래는 commit `9a56b08` 에서 수정한 내용입니다. 주요 변경 사항은 다음과 같습니다.**  
-**1. Finetuning 모드 regression task 실행 가능**  
+**1. Finetuning 모드에서 regression task 실행 가능**  
+**2. Finetuning 모드에서 layer별로 lr 다르게 적용 가능**  
+**3. Pretraining 모드에서 RBF 커널에 기반한 categorical loss 구현**  
+**4. Reproducibility 고려 가능**  
 
 - `main.py`
-  - Finetuning 모드에서 regression task를 고려할 수 있도록 수정했습니다.
+  - Finetuning 모드에서 regression task를 실행할 수 있도록 수정했습니다.
   - Regression task도 training sample 수를 조절할 수 있지만, stratification 여부는 고려하지 않았습니다.
   - Regression task의 loss는 `MSELoss`를 쓰도록 설정했습니다.
   - Regression task는 `MSE`, `MAE`, `RMSE` 등 metric을 산출합니다.
@@ -157,11 +160,14 @@ python3 main.py --mode pretraining --train_num 100
 - `config.py`
   - Finetuning 모드에서 task 종류에 따라 `task_type`을 설정하도록 추가했습니다. 분류 task에는 `cls`를, 회귀 task에는 `reg`을 입력합니다.
   - `self.num_classes`는 classification task에는 `2`를, regression task에는 `1`을 입력합니다.
+  - Finetuning 모드에서 `self.freeze`를 `self.layer_control`로 변경했습니다. Pretraining 모드에서는 해당 옵션을 삭제했습니다.
   
 - `yAwareContrastiveLearning.py`
   - Finetuning 모드에서 `task_type`에 따라 데이터 타입을 조정하기 위해 조건문을 일부 추가했습니다.
+  - Finetuning 모드에서 `self.layer_control`에 따라 layer별로 learning rate를 다르게 적용할 수 있습니다.
 
 - 기타
+  - `losses.py`에 Pretraining 모드에서 동작하는 RBF 커널 기반 categorical loss를 구현했습니다.
   - `.pth` Pretraining 파일들을 모아놓은 `weights` 디렉토리를 추가했습니다.
 
 수정된 코드 실행 예시는 아래와 같습니다.
@@ -216,5 +222,5 @@ python3 main.py --mode finetuning --train_num 100 --task_name AD/CN --stratify b
 - [x] Finetuning 모드에서 regression task 구현하기
 - [x] Reproducibility 구현하기
 - [x] UKB pretrained weight로 ADNI Finetuning 모드 실험하기
-- [ ] Categorical loss kernel 구현하기
-- [ ] Finetuning 모드에서 layer별로 lr 다르게 적용하기
+- [x] Categorical loss kernel 구현하기
+- [x] Finetuning 모드에서 layer별로 lr 다르게 적용하기
