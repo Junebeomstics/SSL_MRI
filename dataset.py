@@ -7,31 +7,34 @@ from augmentations import Transformer, Crop, Cutout, Noise, Normalize, Blur, Fli
 import os
 import nibabel as nib
 from skimage.transform import resize
+###
 
 class ADNI_Dataset(Dataset):
 
-    def __init__(self, config, labels, *args, **kwargs): # ADNI
+    def __init__(self, config, labels, random_seed, *args, **kwargs): # ADNI
         super().__init__(*args, **kwargs)
         
-        self.transforms = Transformer()
+        self.transforms = Transformer(random_seed=random_seed)
         self.config = config
         self.transforms.register(Normalize(), probability=1.0)
-        
+
+        ### ADNI
         if config.tf == "all_tf":
             self.transforms.register(Flip(), probability=0.5)
-            self.transforms.register(Blur(sigma=(0.1, 1)), probability=0.5)
-            self.transforms.register(Noise(sigma=(0.1, 1)), probability=0.5)
-            self.transforms.register(Cutout(patch_size=np.ceil(np.array(config.input_size)/4)), probability=0.5)
-            self.transforms.register(Crop(np.ceil(0.75*np.array(config.input_size)), "random", resize=True),
+            self.transforms.register(Blur(sigma=(0.1, 1), random_seed=random_seed), probability=0.5)
+            self.transforms.register(Noise(sigma=(0.1, 1), random_seed=random_seed), probability=0.5)
+            self.transforms.register(Cutout(patch_size=np.ceil(np.array(config.input_size)/4), random_seed=random_seed), probability=0.5)
+            self.transforms.register(Crop(np.ceil(0.75*np.array(config.input_size)), "random", resize=True, random_seed=random_seed),
                                      probability=0.5)
 
         elif config.tf == "cutout":
-            self.transforms.register(Cutout(patch_size=np.ceil(np.array(config.input_size)/4)), probability=1)
+            self.transforms.register(Cutout(patch_size=np.ceil(np.array(config.input_size)/4), random_seed=random_seed), probability=1)
 
         elif config.tf == "crop":
-            self.transforms.register(Crop(np.ceil(0.75*np.array(config.input_size)), "random", resize=True),
+            self.transforms.register(Crop(np.ceil(0.75*np.array(config.input_size)), "random", resize=True, random_seed=random_seed),
                                      probability=1)
-        
+        ###
+
         ### ADNI
         self.data_dir = './adni_t1s_baseline'
         self.labels = labels

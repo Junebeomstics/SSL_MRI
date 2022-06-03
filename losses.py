@@ -50,13 +50,14 @@ class GeneralizedSupervisedNTXenLoss(nn.Module):
         ### ADNI
         weights_list = []
         for i in range(len(self.config.label_name)):
-            if self.config.label_type[i] == 'cont':
-                kernel = lambda y1, y2: rbf_kernel(y1, y2, gamma=1./(2*self.sigma[i]**2)) # Define kernel for confinuous meta-data
-            else: # self.config.label_type[i] == 'cat':
-                kernel = lambda y1, y2: rbf_kernel(y1, y2, gamma=1./(2*self.sigma[i]**2)) # Define kernel for categorical meta-data
             labels_tmp = labels[:, [i]].flatten()
             all_labels = labels_tmp.view(N, -1).repeat(2, 1).detach().cpu().numpy() # [2N, *]
+            kernel = lambda y1, y2: rbf_kernel(y1, y2, gamma=1./(2*self.sigma[i]**2))
             weights = kernel(all_labels, all_labels) # [2N, 2N]
+            if self.config.label_type[i] == 'cat':
+                constant = kernel(np.array([[0]]), np.array([[1]]))
+                weights[weights != 1.] = float(constant)
+
             weights = weights * (1 - np.eye(2*N)) # puts 0 on the diagonal
             weights /= weights.sum(axis=1)
             weights_list.append(weights)
