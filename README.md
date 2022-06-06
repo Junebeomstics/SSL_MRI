@@ -183,32 +183,33 @@ python3 main.py --mode finetuning --train_num 100 --task_name AD/CN --stratify b
 - str: stratified / bal: balanced  
 - Baseline: `DenseNet121_BHB-10K_yAwareContrastive.pth`  
 - UKB_age: `y-Aware_Contrastive_MRI_epoch_99.pth` 
+- SimCLR: `y-Aware_Contrastive_MRI_epoch_99.pth`
 
-| **1. AD vs CN (N=100 bal)** | Baseline | UKB_age |
-| :---: | :---: | :---: |
-| (freeze=F) | ACC: 69.6%, AUC: 0.80 | ACC: 75.1%, AUC: 0.83 | 
-| (freeze=T) | ACC: 61.0%, AUC: 0.68 | ACC: 68.7%, AUC: 0.73 | 
+| **1. AD vs CN (N=100 bal)** | Baseline | UKB_age | SimCLR |
+| :---: | :---: | :---: | :---: |
+| (freeze=F) | ACC: 69.6%, AUC: 0.80 | ACC: 75.1%, AUC: 0.83 | ACC: 84.2%, AUC: 0.91 | 
+| (freeze=T) | ACC: 61.0%, AUC: 0.68 | ACC: 68.7%, AUC: 0.73 |  |
 | **2. AD vs CN (N=100 str)** |  |  |
-| (freeze=F) | ACC: 81.2%, AUC: 0.86 | ACC: 81.8%, AUC: 0.83 | 
-| (freeze=T) | ACC: 72.4%, AUC: 0.56 | ACC: 73.9%, AUC: 0.72 | 
+| (freeze=F) | ACC: 81.2%, AUC: 0.86 | ACC: 81.8%, AUC: 0.83 | ACC: 82.0%, AUC: 0.87 | 
+| (freeze=T) | ACC: 72.4%, AUC: 0.56 | ACC: 73.9%, AUC: 0.72 |  |
 | **3. AD vs CN (N=500 str)** |  |  |
-| (freeze=F) | ACC: 83.1%, AUC: 0.89 | ACC: 85.5%, AUC: 0.89 | 
-| (freeze=T) | ACC: 74.0%, AUC: 0.73 | ACC: 72.6%, AUC: 0.70 | 
+| (freeze=F) | ACC: 83.1%, AUC: 0.89 | ACC: 85.5%, AUC: 0.89 | ACC: 85.3%, AUC: 0.89 | 
+| (freeze=T) | ACC: 74.0%, AUC: 0.73 | ACC: 72.6%, AUC: 0.70 |  |
 | **4. AD vs MCI (N=100 bal)** |  |  |
-| (freeze=F) | ACC: 56.6%, AUC: 0.59 | ACC: 64.1%, AUC: 0.67 | 
-| (freeze=T) | ACC: 56.9%, AUC: 0.58 | ACC: 61.3%, AUC: 0.64 | 
+| (freeze=F) | ACC: 56.6%, AUC: 0.59 | ACC: 64.1%, AUC: 0.67 | ACC: 67.3%, AUC: 0.75 | 
+| (freeze=T) | ACC: 56.9%, AUC: 0.58 | ACC: 61.3%, AUC: 0.64 |  |
 | **5. AD vs MCI (N=100 str)** |  |  |
-| (freeze=F) | ACC: 73.3%, AUC: 0.66 | ACC: 73.0%, AUC: 0.66 | 
-| (freeze=T) | ACC: 73.7%, AUC: 0.51 | ACC: 73.7%, AUC: 0.63 | 
+| (freeze=F) | ACC: 73.3%, AUC: 0.66 | ACC: 73.0%, AUC: 0.66 | ACC: 73.7%, AUC: 0.71 | 
+| (freeze=T) | ACC: 73.7%, AUC: 0.51 | ACC: 73.7%, AUC: 0.63 |  |
 | **6. AD vs MCI (N=500 str)** |  |  |
-| (freeze=F) | ACC: 75.1%, AUC: 0.75 | ACC: 72.3%, AUC: 0.75 | 
-| (freeze=T) | ACC: 73.6%, AUC: 0.62 | ACC: 73.2%, AUC: 0.62 | 
+| (freeze=F) | ACC: 75.1%, AUC: 0.75 | ACC: 72.3%, AUC: 0.75 | ACC: 74.1%, AUC: 0.64 | 
+| (freeze=T) | ACC: 73.6%, AUC: 0.62 | ACC: 73.2%, AUC: 0.62 |  |
 | **7. MCI vs CN (N=100 str/bal)** |  |  |
-| (freeze=F) | ACC: 53.0%, AUC: 0.62 | ACC: 55.2%, AUC: 0.58 | 
-| (freeze=T) | ACC: 47.0%, AUC: 0.43 | ACC: 55.8%, AUC: 0.59 | 
+| (freeze=F) | ACC: 53.0%, AUC: 0.62 | ACC: 55.2%, AUC: 0.58 | ACC: 56.6%, AUC: 0.58 | 
+| (freeze=T) | ACC: 47.0%, AUC: 0.43 | ACC: 55.8%, AUC: 0.59 |  |
 | **8. MCI vs CN (N=500 str/bal)** |  |  |
-| (freeze=F) | ACC: 61.1%, AUC: 0.64 | ACC: 53.9%, AUC: 0.54 | 
-| (freeze=T) | ACC: 55.6%, AUC: 0.58 | ACC: 52.4%, AUC: 0.55 | 
+| (freeze=F) | ACC: 61.1%, AUC: 0.64 | ACC: 53.9%, AUC: 0.54 | ACC: 56.1%, AUC: 0.60 | 
+| (freeze=T) | ACC: 55.6%, AUC: 0.58 | ACC: 52.4%, AUC: 0.55 |  |
 
 
 
