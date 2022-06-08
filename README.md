@@ -225,3 +225,8 @@ python3 main.py --mode finetuning --train_num 100 --task_name AD/CN --stratify b
 - [x] UKB pretrained weight로 ADNI Finetuning 모드 실험하기
 - [x] Categorical loss kernel 구현하기
 - [x] Finetuning 모드에서 layer별로 lr 다르게 적용하기
+- [ ] Categorical loss constant term configuration으로 넣기
+- [ ] random_seed epoch 수 등으로 조정해 augmentation 다양하게 가져가기
+- [ ] Finetuning 모드 stratification 모드 버리기 (N, freeze 여부는 유지) (12 tasks)
+- [ ] Finetuning 모드 task 별로 학습 및 평가 자동화하기
+- [ ] Train set label 비율 1대1로 고정하고 5-fold stratified CV 실행하기 (각 N=100, N=500)
