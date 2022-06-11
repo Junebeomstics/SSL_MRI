@@ -40,11 +40,10 @@ class Transformer(object):
     """
     Transform = namedtuple("Transform", ["transform", "probability"])
 
-    def __init__(self, random_seed=0): # ADNI
+    def __init__(self):
         """ Initialize the class.
         """
         self.transforms = []
-        self.random_seed = random_seed # ADNI
 
     def register(self, transform, probability=1):
         """ Register a new transformation.
@@ -61,7 +60,6 @@ class Transformer(object):
     def __call__(self, arr):
         """ Apply the registered transformations.
         """
-        np.random.seed(self.random_seed) # ADNI
         transformed = arr.copy()
         for trf in self.transforms:
             if np.random.rand() < trf.probability:
@@ -88,7 +86,7 @@ class Normalize(object):
 
 class Crop(object):
     """Crop the given n-dimensional array either at a random location or centered"""
-    def __init__(self, shape, type="center", resize=False, keep_dim=False, random_seed=0): # ADNI
+    def __init__(self, shape, type="center", resize=False, keep_dim=False):
         """:param
         shape: tuple or list of int
             The shape of the patch to crop
@@ -104,10 +102,8 @@ class Crop(object):
         self.copping_type = type
         self.resize=resize
         self.keep_dim=keep_dim
-        self.random_seed = random_seed # ADNI
 
     def __call__(self, arr):
-        np.random.seed(self.random_seed) # ADNI
         assert isinstance(arr, np.ndarray)
         assert type(self.shape) == int or len(self.shape) == len(arr.shape), "Shape of array {} does not match {}".\
             format(arr.shape, self.shape)
@@ -145,16 +141,14 @@ class Cutout(object):
     cf. Improved Regularization of Convolutional Neural Networks with Cutout, arXiv, 2017
     We assume that the square to be cut is inside the image.
     """
-    def __init__(self, patch_size=None, value=0, random_size=False, inplace=False, localization=None, random_seed=0): # ADNI
+    def __init__(self, patch_size=None, value=0, random_size=False, inplace=False, localization=None):
         self.patch_size = patch_size
         self.value = value
         self.random_size = random_size
         self.inplace = inplace
         self.localization = localization
-        self.random_seed = random_seed # ADNI
 
     def __call__(self, arr):
-        np.random.seed(self.random_seed) # ADNI
         img_shape = np.array(arr.shape)
         if type(self.patch_size) == int:
             size = [self.patch_size for _ in range(len(img_shape))]
@@ -182,24 +176,22 @@ class Cutout(object):
 
 class Flip(object):
     """ Apply a random mirror flip."""
-    def __init__(self, axis=None, random_seed=0): # ADNI
+    def __init__(self, axis=None):
         '''
         :param axis: int, default None
             apply flip on the specified axis. If not specified, randomize the
             flip axis.
         '''
         self.axis = axis
-        self.random_seed = random_seed # ADNI
 
     def __call__(self, arr):
-        np.random.seed(self.random_seed) # ADNI
         if self.axis is None:
             axis = np.random.randint(low=0, high=arr.ndim, size=1)[0]
         return np.flip(arr, axis=(self.axis or axis))
 
 
 class Blur(object):
-    def __init__(self, snr=None, sigma=None, random_seed=0): # ADNI
+    def __init__(self, snr=None, sigma=None):
         """ Add random blur using a Gaussian filter.
             Parameters
             ----------
@@ -215,10 +207,8 @@ class Blur(object):
                              "distribution.")
         self.snr = snr
         self.sigma = sigma
-        self.random_seed = random_seed # ADNI
 
     def __call__(self, arr):
-        np.random.seed(self.random_seed) # ADNI
         sigma = self.sigma
         if self.snr is not None:
             s0 = np.std(arr)
@@ -229,7 +219,7 @@ class Blur(object):
 
 
 class Noise(object):
-    def __init__(self, snr=None, sigma=None, noise_type="gaussian", random_seed=0): # ADNI
+    def __init__(self, snr=None, sigma=None, noise_type="gaussian"):
         """ Add random Gaussian or Rician noise.
 
            The noise level can be specified directly by setting the standard
@@ -261,10 +251,8 @@ class Noise(object):
         self.snr = snr
         self.sigma = sigma
         self.noise_type = noise_type
-        self.random_seed = random_seed # ADNI
 
     def __call__(self, arr):
-        np.random.seed(self.random_seed) # ADNI
         sigma = self.sigma
         if self.snr is not None:
             s0 = np.std(arr)

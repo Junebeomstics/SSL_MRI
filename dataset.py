@@ -7,35 +7,34 @@ from augmentations import Transformer, Crop, Cutout, Noise, Normalize, Blur, Fli
 import os
 import nibabel as nib
 from skimage.transform import resize
-###
 
 class ADNI_Dataset(Dataset):
 
-    def __init__(self, config, labels, random_seed, *args, **kwargs): # ADNI
+    def __init__(self, config, labels, data_type, *args, **kwargs): # ADNI
         super().__init__(*args, **kwargs)
         
-        self.transforms = Transformer(random_seed=random_seed)
+        ### ADNI
         self.config = config
+        self.data_type = data_type
+        self.transforms = Transformer()
         self.transforms.register(Normalize(), probability=1.0)
 
-        ### ADNI
-        if config.tf == "all_tf":
-            self.transforms.register(Flip(), probability=0.5)
-            self.transforms.register(Blur(sigma=(0.1, 1), random_seed=random_seed), probability=0.5)
-            self.transforms.register(Noise(sigma=(0.1, 1), random_seed=random_seed), probability=0.5)
-            self.transforms.register(Cutout(patch_size=np.ceil(np.array(config.input_size)/4), random_seed=random_seed), probability=0.5)
-            self.transforms.register(Crop(np.ceil(0.75*np.array(config.input_size)), "random", resize=True, random_seed=random_seed),
-                                     probability=0.5)
+        if self.data_type == 'train' or self.config.mode == 0:
+            if self.config.tf == "all_tf":
+                self.transforms.register(Flip(), probability=0.5)
+                self.transforms.register(Blur(sigma=(0.1, 1)), probability=0.5)
+                self.transforms.register(Noise(sigma=(0.1, 1)), probability=0.5)
+                self.transforms.register(Cutout(patch_size=np.ceil(np.array(self.config.input_size)/4)), probability=0.5)
+                self.transforms.register(Crop(np.ceil(0.75*np.array(self.config.input_size)), "random", resize=True),
+                                        probability=0.5)
 
-        elif config.tf == "cutout":
-            self.transforms.register(Cutout(patch_size=np.ceil(np.array(config.input_size)/4), random_seed=random_seed), probability=1)
+            elif self.config.tf == "cutout":
+                self.transforms.register(Cutout(patch_size=np.ceil(np.array(self.config.input_size)/4)), probability=1)
 
-        elif config.tf == "crop":
-            self.transforms.register(Crop(np.ceil(0.75*np.array(config.input_size)), "random", resize=True, random_seed=random_seed),
-                                     probability=1)
-        ###
-
-        ### ADNI
+            elif self.config.tf == "crop":
+                self.transforms.register(Crop(np.ceil(0.75*np.array(self.config.input_size)), "random", resize=True),
+                                        probability=1)
+        
         self.data_dir = './adni_t1s_baseline'
         self.labels = labels
         self.files = [x for x in os.listdir(self.data_dir) if x[4:12] in list(self.labels['SubjectID'])]
@@ -69,7 +68,6 @@ class ADNI_Dataset(Dataset):
         img = img.numpy()
         
         np.random.seed()
-
         if self.config.mode == 0: # Pre-training
             x1 = self.transforms(img)
             x2 = self.transforms(img)
@@ -77,7 +75,7 @@ class ADNI_Dataset(Dataset):
         else: # Fine-tuning
             x = self.transforms(img)
         ###
-        
+
         return (x, labels)
 
     def __len__(self):

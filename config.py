@@ -1,3 +1,4 @@
+from cmath import nan
 
 PRETRAINING = 0
 FINE_TUNING = 1
@@ -31,6 +32,7 @@ class Config:
             
             self.label_name = ['PTAGE', 'PTGENDER'] # ADNI
             self.label_type = ['cont', 'cat'] # ADNI
+            self.cat_similarity = [nan, 0] # similarity for mismatched categorical meta-data. set nan for continuous meta-data
             self.alpha_list = [0.5, 0.5] # ADNI # sum = 1
             self.sigma = [5, 5] # ADNI # depends on the meta-data at hand
             
@@ -60,6 +62,6 @@ class Config:
             self.label_name = 'Dx.new' # ADNI # `Dx.new` #####
             self.num_classes = 2 # ADNI - AD vs CN or MCI vs CN or AD vs MCI or reg #####
 
-            self.pretrained_path = './weights/y-Aware_Contrastive_MRI_epoch_99_age.pth' # ADNI #####
-            self.layer_control = 'tune_all' # ADNI # 'freeze' or 'tune_diff' (whether to freeze pretrained layers or not) #####
+            self.pretrained_path = './weights/DenseNet121_BHB-10K_yAwareContrastive.pth' # ADNI #####
+            #self.layer_control = 'tune_all' # ADNI # 'freeze' or 'tune_diff' (whether to freeze pretrained layers or not) #####
             self.patience = 20 # ADNI

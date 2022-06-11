@@ -9,7 +9,7 @@ from Earlystopping import EarlyStopping # ADNI
 
 class yAwareCLModel:
 
-    def __init__(self, net, loss, loader_train, loader_val, loader_test, config, task_name, train_num, stratify, scheduler=None): # ADNI
+    def __init__(self, net, loss, loader_train, loader_val, loader_test, config, task_name, train_num, layer_control, scheduler=None): # ADNI
         """
 
         Parameters
@@ -28,11 +28,11 @@ class yAwareCLModel:
         if config.mode == 0: # PRETRAINING
             self.optimizer = torch.optim.Adam(net.parameters(), lr=config.lr, weight_decay=config.weight_decay)
         else: # config.mode == 1: # FINE_TUNING
-            if config.layer_control == 'tune_all':
+            if layer_control == 'tune_all':
                 self.optimizer = torch.optim.Adam(net.parameters(), lr=config.lr, weight_decay=config.weight_decay)
-            elif config.layer_control == 'freeze':
+            elif layer_control == 'freeze':
                 self.optimizer = torch.optim.Adam(net.classifier.parameters(), lr=config.lr, weight_decay=config.weight_decay)
-            else: # config.layer_control == 'tune_diff':
+            else: # layer_control == 'tune_diff':
                 if config.model == 'DenseNet':
                     self.optimizer = torch.optim.Adam([
                         {"params": net.features.conv0.parameters(), "lr": config.lr*1e-3},
@@ -69,7 +69,6 @@ class yAwareCLModel:
         if train_num != 0:
             self.task_name = task_name
             self.train_num = train_num
-            self.stratify = stratify
         ###
         
         if hasattr(config, 'pretrained_path') and config.pretrained_path is not None:
@@ -142,7 +141,7 @@ class yAwareCLModel:
     def fine_tuning(self):
         print(self.loss)
         print(self.optimizer)
-        early_stopping = EarlyStopping(patience = self.config.patience, path = './ckpts/ADNI_{0}_{2}_{1}.pt'.format(self.task_name.replace('/', ''), self.train_num, self.stratify)) # ADNI
+        early_stopping = EarlyStopping(patience = self.config.patience, path = './ckpts/ADNI_{0}_{1}.pt'.format(self.task_name.replace('/', ''), self.train_num)) # ADNI
         for epoch in range(self.config.nb_epochs):
             ## Training step
             self.model.train()
@@ -205,7 +204,7 @@ class yAwareCLModel:
                 self.scheduler.step()
 
         ### ADNI
-        self.model.load_state_dict(torch.load('./ckpts/ADNI_{0}_{2}_{1}.pt'.format(self.task_name.replace('/', ''), self.train_num, self.stratify))) # ADNI
+        self.model.load_state_dict(torch.load('./ckpts/ADNI_{0}_{1}.pt'.format(self.task_name.replace('/', ''), self.train_num))) # ADNI
 
         ## Test step
         nb_batch = len(self.loader_test)

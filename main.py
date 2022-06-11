@@ -36,6 +36,8 @@ if __name__ == "__main__":
                         help="Set the number of training samples.")                        
     parser.add_argument("--task_name", type=str, required=False, # ADNI
                         help="Set the name of the fine-tuning task. (e.g. AD/MCI)")
+    parser.add_argument("--layer_control", type=int, choices=['tune_all', 'freeze', 'tune_diff'], required=False, # ADNI
+                        help="Set pretrained weight layer control option.")
     parser.add_argument("--stratify", type=str, choices=["strat", "balan"], required=False, # ADNI
                         help="Set training samples are stratified or balanced for fine-tuning task.")
     parser.add_argument("--random_seed", type=int, required=False, default=0, # ADNI
@@ -44,8 +46,9 @@ if __name__ == "__main__":
     mode = PRETRAINING if args.mode == "pretraining" else FINE_TUNING
 
     config = Config(mode)
-
+    
     ### ADNI
+    label_name = config.label_name # 'Dx.new'
     # Control randomness for reproduction
     if args.random_seed != None:
         random_seed = args.random_seed
@@ -60,10 +63,10 @@ if __name__ == "__main__":
 
     if config.mode == PRETRAINING:
         data = pd.read_csv(config.label)
-        for i in range(len(config.label_name)): # ["PTAGE", "PTGENDER"]
+        for i in range(len(label_name)): # ["PTAGE", "PTGENDER"]
             if config.label_type[i] != 'cont': # convert str object to numbers
-                data[config.label_name[i]] = pd.Categorical(data[config.label_name[i]])
-                data[config.label_name[i]] = data[config.label_name[i]].cat.codes
+                data[label_name[i]] = pd.Categorical(data[label_name[i]])
+                data[label_name[i]] = data[label_name[i]].cat.codes
 
         assert args.train_num*(1+config.valid_ratio) <= len(data), 'Not enough valid data. Set smaller --train_num or smaller config.valid_ratio in config.py.'
         label_train, label_valid, label_test = np.split(data.sample(frac=1, random_state=random_seed), 
@@ -71,16 +74,14 @@ if __name__ == "__main__":
         
         print('Task: Pretraining')
         print('N = {0}'.format(args.train_num))
-        print('meta-data: {0}\n'.format(config.label_name))
-        assert len(config.label_name) == len(config.alpha_list), 'len(label_name) and len(alpha_list) should match.'
-        assert len(config.label_name) == len(config.label_type), 'len(label_name) and len(label_type) should match.'
-        assert len(config.label_name) == len(config.sigma), 'len(alpha_list) and len(sigma) should match.'
+        print('meta-data: {0}\n'.format(label_name))
+        assert len(label_name) == len(config.alpha_list), 'len(label_name) and len(alpha_list) should match.'
+        assert len(label_name) == len(config.label_type), 'len(label_name) and len(label_type) should match.'
+        assert len(label_name) == len(config.sigma), 'len(alpha_list) and len(sigma) should match.'
         assert sum(config.alpha_list) == 1.0, 'Sum of alpha list should be 1.'
 
     else: # config.mode == FINE_TUNING:
         labels = pd.read_csv(config.label)
-        label_name = config.label_name # 'Dx.new'
-
         print('Task: Fine-tuning for {0}'.format(args.task_name))
         print('Task type: {0}'.format(config.task_type))
         print('N = {0}'.format(args.train_num))
@@ -130,9 +131,9 @@ if __name__ == "__main__":
                 label_test = pd.concat([test1, test2]).sample(frac=1, random_state=random_seed)
                 assert len(label_test) >= 100, 'Not enough test data. (Total: {0})'.format(len(label_test))
 
-            print('\nTrain data info:\n{0}\nTotal: {1}\n'.format(label_train[config.label_name].value_counts().sort_index(), len(label_train)))
-            print('Valid data info:\n{0}\nTotal: {1}\n'.format(label_valid[config.label_name].value_counts().sort_index(), len(label_valid)))
-            print('Test data info:\n{0}\nTotal: {1}\n'.format(label_test[config.label_name].value_counts().sort_index(), len(label_test)))
+            print('\nTrain data info:\n{0}\nTotal: {1}\n'.format(label_train[label_name].value_counts().sort_index(), len(label_train)))
+            print('Valid data info:\n{0}\nTotal: {1}\n'.format(label_valid[label_name].value_counts().sort_index(), len(label_valid)))
+            print('Test data info:\n{0}\nTotal: {1}\n'.format(label_test[label_name].value_counts().sort_index(), len(label_test)))
 
             label_train[label_name].replace({task_include[0]: 0, task_include[1]: 1}, inplace=True)
             label_valid[label_name].replace({task_include[0]: 0, task_include[1]: 1}, inplace=True)
@@ -144,7 +145,7 @@ if __name__ == "__main__":
             assert config.num_classes == 1, 'Set config.num_classes == 1'
 
             labels = pd.read_csv(config.label)
-            labels = labels[(np.abs(stats.zscore(labels[config.label_name])) < 3)] # remove outliers w.r.t. z-score > 3
+            labels = labels[(np.abs(stats.zscore(labels[label_name])) < 3)] # remove outliers w.r.t. z-score > 3
             assert args.train_num*(1+config.valid_ratio) <= len(labels), 'Not enough valid data. Set smaller --train_num or smaller config.valid_ratio in config.py.'
 
             label_train, label_valid, label_test = np.split(labels.sample(frac=1, random_state=random_seed), 
@@ -157,13 +158,13 @@ if __name__ == "__main__":
     
     ### ADNI
     if config.mode == PRETRAINING:
-        dataset_train = ADNI_Dataset(config, label_train, random_seed)
-        dataset_val = ADNI_Dataset(config, label_valid, random_seed)
-        dataset_test = ADNI_Dataset(config, label_test, random_seed)
+        dataset_train = ADNI_Dataset(config, label_train, data_type='train')
+        dataset_val = ADNI_Dataset(config, label_valid, data_type='valid')
+        dataset_test = ADNI_Dataset(config, label_test, data_type='test')
     elif config.mode == FINE_TUNING:
-        dataset_train = ADNI_Dataset(config, label_train, random_seed)
-        dataset_val = ADNI_Dataset(config, label_valid, random_seed)
-        dataset_test = ADNI_Dataset(config, label_test, random_seed)
+        dataset_train = ADNI_Dataset(config, label_train, data_type='train')
+        dataset_val = ADNI_Dataset(config, label_valid, data_type='valid')
+        dataset_test = ADNI_Dataset(config, label_test, data_type='test')
     ###
 
     loader_train = DataLoader(dataset_train,
@@ -220,7 +221,7 @@ if __name__ == "__main__":
     if config.mode == PRETRAINING:
         model = yAwareCLModel(net, loss, loader_train, loader_val, loader_test, config, "no", 0, "no") # ADNI
     else:
-        model = yAwareCLModel(net, loss, loader_train, loader_val, loader_test, config, args.task_name, args.train_num, args.stratify) # ADNI
+        model = yAwareCLModel(net, loss, loader_train, loader_val, loader_test, config, args.task_name, args.train_num, args.layer_control) # ADNI
 
     if config.mode == PRETRAINING:
         model.pretraining()
@@ -257,9 +258,9 @@ if __name__ == "__main__":
                 ax[i].set_ylabel('True Positive Rate')
                 ax[i].set_xlabel('False Positive Rate')
             
-            if config.layer_control == 'tune_all':
+            if args.layer_control == 'tune_all':
                 control = 'a'
-            elif config.layer_control == 'freeze':
+            elif args.layer_control == 'freeze':
                 control = 'f'
             else:
                 control = 'd'

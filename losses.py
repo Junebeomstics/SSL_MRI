@@ -55,8 +55,8 @@ class GeneralizedSupervisedNTXenLoss(nn.Module):
             kernel = lambda y1, y2: rbf_kernel(y1, y2, gamma=1./(2*self.sigma[i]**2))
             weights = kernel(all_labels, all_labels) # [2N, 2N]
             if self.config.label_type[i] == 'cat':
-                constant = kernel(np.array([[0]]), np.array([[1]]))
-                weights[weights != 1.] = float(constant)
+                #constant = kernel(np.array([[0]]), np.array([[1]]))
+                weights[weights != 1.] = self.config.cat_similarity[i]
 
             weights = weights * (1 - np.eye(2*N)) # puts 0 on the diagonal
             weights /= weights.sum(axis=1)
