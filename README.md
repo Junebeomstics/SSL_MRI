@@ -221,7 +221,7 @@ python3 main_cv.py --train_num 300 --task_name AD/CN --layer_control freeze --ra
 - [5:7] : Pretraining batch size (32 / 64)
 - [7] : Pretraining augmentation type (all_tf / cutout)
 
-| **1. AD vs CN (N=100)** | BHBya64c | UKBya32a | UKBsa32a | UKBya64a | UKBsa64a |
+| **1. AD vs CN (N=100)** | BHBya64c | UKBsa32a | UKBya32a | UKBsa64a | UKBya64a | 
 | :---: | :---: | :---: | :---: | :---: | :---: |
 | (tune)   | 0.83 |  |  |  |  |
 | (freeze) | 0.71 |  |  |  |  |
@@ -241,7 +241,7 @@ python3 main_cv.py --train_num 300 --task_name AD/CN --layer_control freeze --ra
 | (tune)   | 0.57 |  |  |  |  |
 | (freeze) | 0.58 |  |  |  |  |
 
-| **1. AD vs CN (N=100)** | UKBya64c | UKBsa64c | UKBys64c | UKByi64c | UKBsa64c+UKBya64c |
+| **1. AD vs CN (N=100)** | UKBsa64c | UKBya64c | UKBys64c | UKByi64c | UKBsa64c+UKBya64c |
 | :---: | :---: | :---: | :---: | :---: | :---: |
 | (tune)   |  |  |  |  |  |
 | (freeze) |  |  |  |  |  |
