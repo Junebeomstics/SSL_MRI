@@ -215,7 +215,6 @@ python3 main_cv.py --train_num 300 --task_name AD/CN --layer_control freeze --ra
 ## ADNI Finetuning 모드 Test 결과
 - Samples are balanced for all tasks.
 - Average AUC for 5-fold stratified CV Leave-Site-Out  
-- Baseline: `DenseNet121_BHB-10K_yAwareContrastive.pth`  
 - [0:3] : Pretraining dataset (BHB / UKB)
 - [3] : Pretraining model type (yAware / SimCLR)
 - [4] : Pretraining meta-data (age / sex / intelligence GPS)
