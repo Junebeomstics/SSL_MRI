@@ -1,6 +1,6 @@
 ### ADNI
 import os
-os.environ["CUDA_VISIBLE_DEVICES"] = '1, 2, 3'
+#os.environ["CUDA_VISIBLE_DEVICES"] = '1, 2, 3'
 import time
 import datetime
 ###
