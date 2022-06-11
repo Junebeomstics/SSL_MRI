@@ -216,8 +216,11 @@ python3 main_cv.py --train_num 300 --task_name AD/CN --layer_control freeze --ra
 - Samples are balanced for all tasks.
 - Average AUC for 5-fold stratified CV Leave-Site-Out  
 - Baseline: `DenseNet121_BHB-10K_yAwareContrastive.pth`  
-- UKB_age: `y-Aware_Contrastive_MRI_epoch_99.pth` 
-- SimCLR: `Simclr_Contrastive_MRI_epoch_99.pth`
+- [0:3] : Pretraining dataset (BHB / UKB)
+- [3] : Pretraining model type (yAware / SimCLR)
+- [4] : Pretraining meta-data (age / sex / intelligence GPS)
+- [5:7] : Pretraining batch size (32 / 64)
+- [7] : Pretraining augmentation type (all_tf / cutout)
 
 | **1. AD vs CN (N=100)** | BHBya64c | UKBya32a | UKBsa32a | UKBya64a | UKBsa64a |
 | :---: | :---: | :---: | :---: | :---: | :---: |
