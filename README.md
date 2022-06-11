@@ -184,7 +184,7 @@ python3 main.py --mode finetuning --train_num 100 --task_name AD/CN --stratify b
 - Average AUC for 5-fold stratified CV Leave-Site-Out  
 - Baseline: `DenseNet121_BHB-10K_yAwareContrastive.pth`  
 - UKB_age: `y-Aware_Contrastive_MRI_epoch_99.pth` 
-- SimCLR: `Simclr_Contrastive_MRI_epoch_99_age.pth`
+- SimCLR: `Simclr_Contrastive_MRI_epoch_99.pth`
 
 | **1. AD vs CN (N=100)** | Baseline | UKB_age | SimCLR |
 | :---: | :---: | :---: | :---: |
