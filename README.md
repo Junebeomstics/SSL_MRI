@@ -189,6 +189,9 @@ python3 main.py --mode finetuning --train_num 100 --task_name AD/CN --stratify b
   - `--layer_control`를 추가해 기존에 `config.py`에서 제어하던 `self.layer_control`을 argument로 주도록 했습니다.
   - `--random_seed`는 random augmentation에는 영향을 주지 않습니다.
 
+- `dataset.py`
+  - Finetuning 모드에서 train 데이터셋만 augmentation을 적용하도록 수정했습니다.
+
 - `losses.py`
   - `self.config.cat_similarity`로 `config.py`에서 categorical meta-data의 similarity를 주도록 했습니다.
 
