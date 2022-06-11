@@ -179,7 +179,7 @@ python3 main.py --mode finetuning --train_num 100 --task_name AD/CN --stratify b
 
 
 
-## ADNI Dataset Adaptation (220611 commit `-`) - wonyoung
+## ADNI Dataset Adaptation (220611 commit `b84bc18`) - wonyoung
 
 **아래는 commit `ebba070` 에서 수정한 내용입니다. 주요 변경 사항은 다음과 같습니다.**  
 **1. Pretraining 모드에서 categorical loss를 hyperparameter화**  
