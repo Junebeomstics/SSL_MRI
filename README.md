@@ -179,6 +179,36 @@ python3 main.py --mode finetuning --train_num 100 --task_name AD/CN --stratify b
 
 
 
+## ADNI Dataset Adaptation (220611 commit `-`) - wonyoung
+
+**아래는 commit `ebba070` 에서 수정한 내용입니다. 주요 변경 사항은 다음과 같습니다.**  
+**1. Pretraining 모드에서 categorical loss를 hyperparameter화**  
+**2. 5-fold stratified CV Leave-Site-Out 구현 및 실험 중**  
+
+- `main.py`
+  - `--layer_control`를 추가해 기존에 `config.py`에서 제어하던 `self.layer_control`을 argument로 주도록 했습니다.
+  - `--random_seed`는 random augmentation에는 영향을 주지 않습니다.
+
+- `losses.py`
+  - `self.config.cat_similarity`로 `config.py`에서 categorical meta-data의 similarity를 주도록 했습니다.
+
+- `main_cv.py`
+  - Finetuning 모드만을 위한 파일입니다.
+  - 모든 task에 대해 balanced sample을 세팅합니다.
+  - `--layer_control` argument로 `self.layer_control`을 조절합니다.
+  - 5-fold stratified CV Leave-Site-Out을 구현했습니다.
+ 
+수정된 코드 실행 예시는 아래와 같습니다.
+```bash
+python3 main.py --mode pretraining --train_num 100 --random_seed 0
+python3 main.py --mode finetuning --train_num 100 --task_name PTAGE --layer_control tune_all --random_seed 0
+python3 main.py --mode finetuning --train_num 100 --task_name AD/CN --layer_control freeze --stratify balan --random_seed 0
+
+python3 main_cv.py --train_num 100 --task_name AD/CN --layer_control tune_all --random_seed 0
+python3 main_cv.py --train_num 300 --task_name AD/CN --layer_control freeze --random_seed 0
+```
+
+
 ## ADNI Finetuning 모드 Test 결과
 - Samples are balanced for all tasks.
 - Average AUC for 5-fold stratified CV Leave-Site-Out  
