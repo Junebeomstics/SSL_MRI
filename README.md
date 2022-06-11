@@ -219,25 +219,45 @@ python3 main_cv.py --train_num 300 --task_name AD/CN --layer_control freeze --ra
 - UKB_age: `y-Aware_Contrastive_MRI_epoch_99.pth` 
 - SimCLR: `Simclr_Contrastive_MRI_epoch_99.pth`
 
-| **1. AD vs CN (N=100)** | BHBya64c | UKBya32a | UKBsa32a | UKBya64a | UKBsa64a | UKBya64c | UKBsa64c | UKBys64c | UKByi64c | UKBsa64c+UKBya64c |
-| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| (tune)   | 0.83 |  |  |  |  |  |  |  |  |  | 
-| (freeze) | 0.71 |  |  |  |  |  |  |  |  |  | 
-| **2. AD vs CN (N=300)** |  |  |  |  |  |  |  |  |  |  |
-| (tune)   | 0.90 |  |  |  |  |  |  |  |  |  | 
-| (freeze) | 0.76 |  |  |  |  |  |  |  |  |  | 
-| **3. AD vs MCI (N=100)** |  |  |  |  |  |  |  |  |  |  |
-| (tune)   | 0.69 |  |  |  |  |  |  |  |  |  | 
-| (freeze) | 0.65 |  |  |  |  |  |  |  |  |  | 
-| **4. AD vs MCI (N=300)** |  |  |  |  |  |  |  |  |  |  |
-| (tune)   | 0.77 |  |  |  |  |  |  |  |  |  | 
-| (freeze) | 0.68 |  |  |  |  |  |  |  |  |  | 
-| **5. MCI vs CN (N=100)** |  |  |  |  |  |  |  |  |  |  |
-| (tune)   | 0.59 |  |  |  |  |  |  |  |  |  | 
-| (freeze) | 0.57 |  |  |  |  |  |  |  |  |  | 
-| **6. MCI vs CN (N=500)** |  |  |  |  |  |  |  |  |  |  |
-| (tune)   | 0.57 |  |  |  |  |  |  |  |  |  | 
-| (freeze) | 0.58 |  |  |  |  |  |  |  |  |  | 
+| **1. AD vs CN (N=100)** | BHBya64c | UKBya32a | UKBsa32a | UKBya64a | UKBsa64a |
+| :---: | :---: | :---: | :---: | :---: | :---: |
+| (tune)   | 0.83 |  |  |  |  |
+| (freeze) | 0.71 |  |  |  |  |
+| **2. AD vs CN (N=300)** |  |  |  |  |  |
+| (tune)   | 0.90 |  |  |  |  |
+| (freeze) | 0.76 |  |  |  |  |
+| **3. AD vs MCI (N=100)** |  |  |  |  |  |
+| (tune)   | 0.69 |  |  |  |  |
+| (freeze) | 0.65 |  |  |  |  |
+| **4. AD vs MCI (N=300)** |  |  |  |  |  |
+| (tune)   | 0.77 |  |  |  |  |
+| (freeze) | 0.68 |  |  |  |  |
+| **5. MCI vs CN (N=100)** |  |  |  |  |  |
+| (tune)   | 0.59 |  |  |  |  |
+| (freeze) | 0.57 |  |  |  |  |
+| **6. MCI vs CN (N=500)** |  |  |  |  |  |
+| (tune)   | 0.57 |  |  |  |  |
+| (freeze) | 0.58 |  |  |  |  |
+
+| **1. AD vs CN (N=100)** | UKBya64c | UKBsa64c | UKBys64c | UKByi64c | UKBsa64c+UKBya64c |
+| :---: | :---: | :---: | :---: | :---: | :---: |
+| (tune)   |  |  |  |  |  |
+| (freeze) |  |  |  |  |  |
+| **2. AD vs CN (N=300)** |  |  |  |  |  |
+| (tune)   |  |  |  |  |  |
+| (freeze) |  |  |  |  |  |
+| **3. AD vs MCI (N=100)** |  |  |  |  |  |
+| (tune)   |  |  |  |  |  |
+| (freeze) |  |  |  |  |  |
+| **4. AD vs MCI (N=300)** |  |  |  |  |  |
+| (tune)   |  |  |  |  |  |
+| (freeze) |  |  |  |  |  |
+| **5. MCI vs CN (N=100)** |  |  |  |  |  |
+| (tune)   |  |  |  |  |  |
+| (freeze) |  |  |  |  |  |
+| **6. MCI vs CN (N=500)** |  |  |  |  |  |
+| (tune)   |  |  |  |  |  |
+| (freeze) |  |  |  |  |  |
 
 
 
