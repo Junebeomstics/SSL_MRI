@@ -180,36 +180,31 @@ python3 main.py --mode finetuning --train_num 100 --task_name AD/CN --stratify b
 
 
 ## ADNI Finetuning 모드 Test 결과
-- str: stratified / bal: balanced  
+- Samples are balanced for all tasks.
+- Average AUC for 5-fold stratified CV Leave-Site-Out  
 - Baseline: `DenseNet121_BHB-10K_yAwareContrastive.pth`  
 - UKB_age: `y-Aware_Contrastive_MRI_epoch_99.pth` 
 - SimCLR: `Simclr_Contrastive_MRI_epoch_99_age.pth`
 
-| **1. AD vs CN (N=100 bal)** | Baseline | UKB_age | SimCLR |
+| **1. AD vs CN (N=100)** | Baseline | UKB_age | SimCLR |
 | :---: | :---: | :---: | :---: |
-| (freeze=F) | ACC: 69.6%, AUC: 0.80 | ACC: 75.1%, AUC: 0.83 | ACC: 84.2%, AUC: 0.91 | 
-| (freeze=T) | ACC: 61.0%, AUC: 0.68 | ACC: 68.7%, AUC: 0.73 | ACC: 70.9%, AUC: 0.76 | 
-| **2. AD vs CN (N=100 str)** |  |  |
-| (freeze=F) | ACC: 81.2%, AUC: 0.86 | ACC: 81.8%, AUC: 0.83 | ACC: 82.0%, AUC: 0.87 | 
-| (freeze=T) | ACC: 72.4%, AUC: 0.56 | ACC: 73.9%, AUC: 0.72 | ACC: 73.3%, AUC: 0.72 | 
-| **3. AD vs CN (N=500 str)** |  |  |
-| (freeze=F) | ACC: 83.1%, AUC: 0.89 | ACC: 85.5%, AUC: 0.89 | ACC: 85.3%, AUC: 0.89 | 
-| (freeze=T) | ACC: 74.0%, AUC: 0.73 | ACC: 72.6%, AUC: 0.70 | ACC: 74.9%, AUC: 0.75 | 
-| **4. AD vs MCI (N=100 bal)** |  |  |
-| (freeze=F) | ACC: 56.6%, AUC: 0.59 | ACC: 64.1%, AUC: 0.67 | ACC: 67.3%, AUC: 0.75 | 
-| (freeze=T) | ACC: 56.9%, AUC: 0.58 | ACC: 61.3%, AUC: 0.64 | ACC: 65.5%, AUC: 0.70 | 
-| **5. AD vs MCI (N=100 str)** |  |  |
-| (freeze=F) | ACC: 73.3%, AUC: 0.66 | ACC: 73.0%, AUC: 0.66 | ACC: 73.7%, AUC: 0.71 | 
-| (freeze=T) | ACC: 73.7%, AUC: 0.51 | ACC: 73.7%, AUC: 0.63 | ACC: 73.7%, AUC: 0.66 | 
-| **6. AD vs MCI (N=500 str)** |  |  |
-| (freeze=F) | ACC: 75.1%, AUC: 0.75 | ACC: 72.3%, AUC: 0.75 | ACC: 74.1%, AUC: 0.64 | 
-| (freeze=T) | ACC: 73.6%, AUC: 0.62 | ACC: 73.2%, AUC: 0.62 | ACC: 73.2%, AUC: 0.66 | 
-| **7. MCI vs CN (N=100 str/bal)** |  |  |
-| (freeze=F) | ACC: 53.0%, AUC: 0.62 | ACC: 55.2%, AUC: 0.58 | ACC: 56.6%, AUC: 0.58 | 
-| (freeze=T) | ACC: 47.0%, AUC: 0.43 | ACC: 55.8%, AUC: 0.59 | ACC: 54.8%, AUC: 0.56 | 
-| **8. MCI vs CN (N=500 str/bal)** |  |  |
-| (freeze=F) | ACC: 61.1%, AUC: 0.64 | ACC: 53.9%, AUC: 0.54 | ACC: 56.1%, AUC: 0.60 | 
-| (freeze=T) | ACC: 55.6%, AUC: 0.58 | ACC: 52.4%, AUC: 0.55 | ACC: 54.3%, AUC: 0.55 | 
+| (tune)   | 0.83 |  |  | 
+| (freeze) | 0.71 |  |  | 
+| **2. AD vs CN (N=300)** |  |  |
+| (tune)   | 0.90 |  |   | 
+| (freeze) |  |  |  | 
+| **3. AD vs MCI (N=100)** |  |  |
+| (tune)   | 0.69 |  |  | 
+| (freeze) | 0.65 |  |  | 
+| **4. AD vs MCI (N=300)** |  |  |
+| (tune)   | 0.77 |  |  | 
+| (freeze) |  |  |  | 
+| **5. MCI vs CN (N=100)** |  |  |
+| (tune)   | 0.59 |  |  | 
+| (freeze) | 0.57 |  |  | 
+| **6. MCI vs CN (N=500)** |  |  |
+| (tune)   | 0.57 |  |  | 
+| (freeze) |  |  |  | 
 
 
 
@@ -225,8 +220,7 @@ python3 main.py --mode finetuning --train_num 100 --task_name AD/CN --stratify b
 - [x] UKB pretrained weight로 ADNI Finetuning 모드 실험하기
 - [x] Categorical loss kernel 구현하기
 - [x] Finetuning 모드에서 layer별로 lr 다르게 적용하기
-- [ ] Categorical loss constant term configuration으로 넣기
-- [ ] random_seed epoch 수 등으로 조정해 augmentation 다양하게 가져가기
-- [ ] Finetuning 모드 stratification 모드 버리기 (N, freeze 여부는 유지) (12 tasks)
-- [ ] Finetuning 모드 task 별로 학습 및 평가 자동화하기
-- [ ] Train set label 비율 1대1로 고정하고 5-fold stratified CV 실행하기 (각 N=100, N=500)
+- [x] Categorical loss constant term configuration으로 넣기
+- [x] Finetuning 모드 stratification 모드 버리기 (N, freeze 여부는 유지) (12 tasks)
+- [x] Finetuning 모드 task 별로 학습 및 평가 자동화하기
+- [x] Train set label 비율 1대1로 고정하고 5-fold stratified CV 실행하기 (각 N=100, N=300, N=500)
