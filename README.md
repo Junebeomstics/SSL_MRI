@@ -220,7 +220,7 @@ python3 main_cv.py --train_num 300 --task_name AD/CN --layer_control freeze --ra
 - SimCLR: `Simclr_Contrastive_MRI_epoch_99.pth`
 
 | **1. AD vs CN (N=100)** | BHBya64c | UKBya32a | UKBsa32a | UKBya64a | UKBsa64a | UKBya64c | UKBsa64c | UKBys64c | UKByi64c | UKBsa64c+UKBya64c |
-| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | (tune)   | 0.83 |  |  |  |  |  |  |  |  |  | 
 | (freeze) | 0.71 |  |  |  |  |  |  |  |  |  | 
 | **2. AD vs CN (N=300)** |  |  |  |  |  |  |  |  |  |  |
