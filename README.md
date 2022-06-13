@@ -232,7 +232,7 @@ python3 main_cv.py --train_num 300 --task_name AD/CN --layer_control freeze --ra
 | (tune)   | 0.69 | 0.69 | 0.68 |  |  |
 | (freeze) | 0.65 | 0.63 | 0.67 |  |  |
 | **4. AD vs MCI (N=300)** |  |  |  |  |  |
-| (tune)   | 0.77 | 0.77 |  |  |  |
+| (tune)   | 0.77 | 0.77 | 0.77 |  |  |
 | (freeze) | 0.68 | 0.67 | 0.67 |  |  |
 | **5. MCI vs CN (N=100)** |  |  |  |  |  |
 | (tune)   | 0.59 | 0.59 | 0.58 |  |  |
@@ -279,3 +279,4 @@ python3 main_cv.py --train_num 300 --task_name AD/CN --layer_control freeze --ra
 - [x] Finetuning 모드 stratification 모드 버리기 (N, freeze 여부는 유지) (12 tasks)
 - [x] Finetuning 모드 task 별로 학습 및 평가 자동화하기
 - [x] Train set label 비율 1대1로 고정하고 5-fold stratified CV 실행하기 (각 N=100, N=300, N=500)
+- [ ] 다양한 Pretrainged 모델로 5-fold stratified CV Leave-Site-Out 실험하기
