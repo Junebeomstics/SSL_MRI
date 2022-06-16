@@ -213,7 +213,7 @@ python3 main_cv.py --train_num 300 --task_name AD/CN --layer_control freeze --ra
 
 
 
-## ADNI Dataset Adaptation (220616 commit `-`) - wonyoung
+## ADNI Dataset Adaptation (220616 commit `134d746`) - wonyoung
 
 **아래는 commit `b84bc18` 에서 수정한 내용입니다. 주요 변경 사항은 다음과 같습니다.**  
 **1. 5-fold stratified CV Leave-Site-Out 실험 중**  
