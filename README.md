@@ -212,6 +212,27 @@ python3 main_cv.py --train_num 300 --task_name AD/CN --layer_control freeze --ra
 ```
 
 
+
+## ADNI Dataset Adaptation (220616 commit `-`) - wonyoung
+
+**아래는 commit `b84bc18` 에서 수정한 내용입니다. 주요 변경 사항은 다음과 같습니다.**  
+**1. 5-fold stratified CV Leave-Site-Out 실험 중**  
+
+- `main_cv.py`
+  - 5-fold stratified CV Leave-Site-Out에 대해 standard deviation 계산 코드를 추가했습니다.
+
+코드 실행 예시는 아래와 같습니다.
+```bash
+python3 main.py --mode pretraining --train_num 100 --random_seed 0
+python3 main.py --mode finetuning --train_num 100 --task_name PTAGE --layer_control tune_all --random_seed 0
+python3 main.py --mode finetuning --train_num 100 --task_name AD/CN --layer_control freeze --stratify balan --random_seed 0
+
+python3 main_cv.py --train_num 100 --task_name AD/CN --layer_control tune_all --random_seed 0
+python3 main_cv.py --train_num 300 --task_name AD/CN --layer_control freeze --random_seed 0
+```
+
+
+
 ## ADNI Finetuning 모드 Test 결과
 - Samples are balanced for all tasks.
 - Average AUC for 5-fold stratified CV Leave-Site-Out  
