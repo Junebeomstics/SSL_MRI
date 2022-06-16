@@ -188,7 +188,10 @@ if __name__ == "__main__":
             print('RMSE: {:.2f}'.format(np.sqrt(mean_squared_error(outGTnp, outPREDnp))))
             print('R2-score: {:.4f}'.format(r2_score(outGTnp, outPREDnp)))
 
-    print('<<< Stratified {0} Fold Test mean AUC: {1:.4f} >>>'.format(SPLITS, sum(aurocMean_list) / SPLITS))
+    aurocMean_arr = np.array(aurocMean_list)
+    print('<<< Stratified {0} Fold Test mean AUC: {1:.4f}, std: {2:.4f} >>>'.format(SPLITS, 
+                                                                                    np.mean(aurocMean_arr),
+                                                                                    np.std(aurocMean_arr)))
     end_time = time.time()
     print('\nTotal', round((end_time - start_time) / 60), 'minutes elapsed.')
     now = datetime.datetime.now()
