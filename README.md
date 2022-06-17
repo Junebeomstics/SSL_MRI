@@ -264,17 +264,17 @@ python3 main_cv.py --train_num 300 --task_name AD/CN --layer_control freeze --ra
 
 | **1. AD vs CN (N=100)** | UKBsa64c | UKBya64c | UKBys64c | UKByi64c | UKBsa64c+UKBya64c |
 | :---: | :---: | :---: | :---: | :---: | :---: |
-| (tune)   |  |  |  |  |  |
-| (freeze) |  |  |  |  |  |
+| (tune)   | 0.83 +/- 0.02 |  |  |  |  |
+| (freeze) | 0.71 +/- 0.01 |  |  |  |  |
 | **2. AD vs CN (N=300)** |  |  |  |  |  |
-| (tune)   |  |  |  |  |  |
-| (freeze) |  |  |  |  |  |
+| (tune)   | 0.89 +/- 0.02 |  |  |  |  |
+| (freeze) | 0.75 +/- 0.02 |  |  |  |  |
 | **3. AD vs MCI (N=100)** |  |  |  |  |  |
-| (tune)   |  |  |  |  |  |
-| (freeze) |  |  |  |  |  |
+| (tune)   | 0.69 +/- 0.03 |  |  |  |  |
+| (freeze) | 0.64 +/- 0.05 |  |  |  |  |
 | **4. AD vs MCI (N=300)** |  |  |  |  |  |
-| (tune)   |  |  |  |  |  |
-| (freeze) |  |  |  |  |  |
+| (tune)   | 0.76 +/- 0.02 |  |  |  |  |
+| (freeze) | 0.68 +/- 0.01 |  |  |  |  |
 | **5. MCI vs CN (N=100)** |  |  |  |  |  |
 | (tune)   |  |  |  |  |  |
 | (freeze) |  |  |  |  |  |
