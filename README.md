@@ -276,11 +276,11 @@ python3 main_cv.py --train_num 300 --task_name AD/CN --layer_control freeze --ra
 | (tune)   | 0.76 +/- 0.02 |  |  |  |  |
 | (freeze) | 0.68 +/- 0.01 |  |  |  |  |
 | **5. MCI vs CN (N=100)** |  |  |  |  |  |
-| (tune)   |  |  |  |  |  |
-| (freeze) |  |  |  |  |  |
+| (tune)   | 0.60 +/- 0.01 |  |  |  |  |
+| (freeze) | 0.55 +/- 0.04 |  |  |  |  |
 | **6. MCI vs CN (N=500)** |  |  |  |  |  |
-| (tune)   |  |  |  |  |  |
-| (freeze) |  |  |  |  |  |
+| (tune)   | 0.59 +/- 0.04 |  |  |  |  |
+| (freeze) | 0.57 +/- 0.03 |  |  |  |  |
 
 
 
