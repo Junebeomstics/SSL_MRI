@@ -9,7 +9,7 @@ from Earlystopping import EarlyStopping # ADNI
 
 class yAwareCLModel:
 
-    def __init__(self, net, loss, loader_train, loader_val, loader_test, config, task_name, train_num, layer_control, scheduler=None): # ADNI
+    def __init__(self, net, loss, loader_train, loader_val, loader_test, config, task_name, train_num, layer_control, n_iter, pretrained_path, scheduler=None): # ADNI
         """
 
         Parameters
@@ -55,7 +55,7 @@ class yAwareCLModel:
                         {"params": net.classifier.parameters(), "lr": config.lr},
                         ], lr=config.lr, weight_decay=config.weight_decay)
         ###
-
+        self.layer_control = layer_control
         self.scheduler = scheduler
         self.loader = loader_train
         self.loader_val = loader_val
@@ -69,10 +69,12 @@ class yAwareCLModel:
         if train_num != 0:
             self.task_name = task_name
             self.train_num = train_num
+        self.n_iter = n_iter
+        self.pretrained_path = pretrained_path
         ###
         
-        if hasattr(config, 'pretrained_path') and config.pretrained_path is not None:
-            self.load_model(config.pretrained_path)
+        if pretrained_path != 'None':
+            self.load_model(pretrained_path)
 
         self.model = DataParallel(self.model).to(self.device)
 
@@ -141,7 +143,16 @@ class yAwareCLModel:
     def fine_tuning(self):
         print(self.loss)
         print(self.optimizer)
-        early_stopping = EarlyStopping(patience = self.config.patience, path = './ckpts/ADNI_{0}_{1}.pt'.format(self.task_name.replace('/', ''), self.train_num)) # ADNI
+        if self.n_iter is not None:
+            n_iter = 'CV' + str(self.n_iter)
+        else:
+            n_iter = 'model'
+        early_stopping = EarlyStopping(patience = self.config.patience, 
+                                       path = './ckpts/{0}/{1}/{1}_{2}_{3}_{4}.pt'.format(self.task_name.replace('/', ''), 
+                                                                                          str(self.pretrained_path).split('/')[-1].split('.')[0], 
+                                                                                          self.layer_control[0],
+                                                                                          self.train_num,
+                                                                                          n_iter)) # ADNI
         for epoch in range(self.config.nb_epochs):
             ## Training step
             self.model.train()
@@ -204,7 +215,11 @@ class yAwareCLModel:
                 self.scheduler.step()
 
         ### ADNI
-        self.model.load_state_dict(torch.load('./ckpts/ADNI_{0}_{1}.pt'.format(self.task_name.replace('/', ''), self.train_num))) # ADNI
+        self.model.load_state_dict(torch.load('./ckpts/{0}/{1}/{1}_{2}_{3}_{4}.pt'.format(self.task_name.replace('/', ''), 
+                                                                                          str(self.pretrained_path).split('/')[-1].split('.')[0], 
+                                                                                          self.layer_control[0],
+                                                                                          self.train_num,
+                                                                                          n_iter))) # ADNI
 
         ## Test step
         nb_batch = len(self.loader_test)
@@ -221,6 +236,7 @@ class yAwareCLModel:
                 inputs = inputs.to(self.device)
                 labels = labels.to(self.device)
                 y = self.model(inputs)
+
                 if self.config.task_type == 'reg': # ADNI
                     labels = labels.to(torch.float32) # ADNI
                     outGT = torch.cat((outGT, labels), 0) # ADNI

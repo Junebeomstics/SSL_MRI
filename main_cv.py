@@ -31,6 +31,8 @@ if __name__ == "__main__":
     print("[main_cv.py started at {0}]".format(nowDatetime))
     start_time = time.time() # ADNI
     parser = argparse.ArgumentParser()
+    parser.add_argument("--pretrained_path", type=str, required=True, # ADNI
+                        help="Set the pretrained model path.")   
     parser.add_argument("--train_num", type=int, required=True, # ADNI
                         help="Set the number of training samples.")                        
     parser.add_argument("--task_name", type=str, required=True, # ADNI
@@ -42,9 +44,15 @@ if __name__ == "__main__":
     args = parser.parse_args()
     config = Config(FINE_TUNING)
 
+    pretrained_path = args.pretrained_path
+    train_num = args.train_num
+    task_name = args.task_name
+    layer_control = args.layer_control
+    random_seed = args.random_seed
+    print('Pretrained path:', pretrained_path)
+
     # Control randomness for reproduction
-    if args.random_seed != None:
-        random_seed = args.random_seed
+    if random_seed != None:
         os.environ["PYTHONHASHSEED"] = str(random_seed)
         random.seed(random_seed)
         np.random.seed(random_seed)
@@ -56,12 +64,12 @@ if __name__ == "__main__":
 
     labels = pd.read_csv(config.label)
     label_name = config.label_name # 'Dx.new'
-    print('Task: Fine-tuning for {0}'.format(args.task_name))
+    print('Task: Fine-tuning for {0}'.format(task_name))
     print('Task type: {0}'.format(config.task_type))
-    print('N = {0}'.format(args.train_num))
+    print('N = {0}'.format(train_num))
 
     if config.task_type == 'cls':
-        task_include = args.task_name.split('/')
+        task_include = task_name.split('/')
         assert len(task_include) == 2, 'Set two labels.'
         assert config.num_classes == 2, 'Set config.num_classes == 2'
 
@@ -75,11 +83,11 @@ if __name__ == "__main__":
         data_1 = data_1.sample(frac=1, random_state=random_seed)[:limit]
         data_2 = data_2.sample(frac=1, random_state=random_seed)[:limit]
 
-        len_1_train = round(args.train_num*0.5)
-        len_2_train = args.train_num - len_1_train
-        len_1_valid = round(int(args.train_num*config.valid_ratio)*0.5)
-        len_2_valid = int(args.train_num*config.valid_ratio) - len_1_valid
-        assert args.train_num*(1+config.valid_ratio) < limit*2, 'Not enough data to make balanced set.'
+        len_1_train = round(train_num*0.5)
+        len_2_train = train_num - len_1_train
+        len_1_valid = round(int(train_num*config.valid_ratio)*0.5)
+        len_2_valid = int(train_num*config.valid_ratio) - len_1_valid
+        assert train_num*(1+config.valid_ratio) < limit*2, 'Not enough data to make balanced set.'
 
         train1, valid1, test1 = np.split(data_1, [len_1_train, len_1_train + len_1_valid])
         train2, valid2, test2 = np.split(data_2, [len_2_train, len_2_train + len_2_valid])
@@ -92,21 +100,25 @@ if __name__ == "__main__":
         print('Valid data info:\n{0}\nTotal: {1}\n'.format(label_valid[label_name].value_counts().sort_index(), len(label_valid)))
         print('Test data info:\n{0}\nTotal: {1}\n'.format(label_test[label_name].value_counts().sort_index(), len(label_test)))
 
+        label_train.to_csv('./csv/ADNI_{0}{1}train.csv'.format(task_name.replace('/', ''), str(train_num)[0]), index=False)
+        label_valid.to_csv('./csv/ADNI_{0}{1}valid.csv'.format(task_name.replace('/', ''), str(train_num)[0]), index=False)
+        label_test.to_csv('./csv/ADNI_{0}{1}test.csv'.format(task_name.replace('/', ''), str(train_num)[0]), index=False)
+
         label_train[label_name].replace({task_include[0]: 0, task_include[1]: 1}, inplace=True)
         label_valid[label_name].replace({task_include[0]: 0, task_include[1]: 1}, inplace=True)
         label_test[label_name].replace({task_include[0]: 0, task_include[1]: 1}, inplace=True)
 
     else: # config.task_type = 'reg'
-        task_include = args.task_name.split('/')
+        task_include = task_name.split('/')
         assert len(task_include) == 1, 'Set only one label.'
         assert config.num_classes == 1, 'Set config.num_classes == 1'
 
         labels = pd.read_csv(config.label)
         labels = labels[(np.abs(stats.zscore(labels[label_name])) < 3)] # remove outliers w.r.t. z-score > 3
-        assert args.train_num*(1+config.valid_ratio) <= len(labels), 'Not enough valid data. Set smaller --train_num or smaller config.valid_ratio in config.py.'
+        assert train_num*(1+config.valid_ratio) <= len(labels), 'Not enough valid data. Set smaller --train_num or smaller config.valid_ratio in config.py.'
 
         label_train, label_valid, label_test = np.split(labels.sample(frac=1, random_state=random_seed), 
-                                                        [args.train_num, int(args.train_num*(1+config.valid_ratio))])
+                                                        [train_num, int(train_num*(1+config.valid_ratio))])
         
         print('\nTrain data info:\nTotal: {0}\n'.format(len(label_train)))
         print('Valid data info:\nTotal: {0}\n'.format(len(label_valid)))
@@ -118,11 +130,6 @@ if __name__ == "__main__":
     skf = StratifiedKFold(n_splits = SPLITS)
 
     label_tv = pd.concat([label_train, label_valid])
-    label_tv.to_csv('./csv/ADNI_{0}{1}tv.csv'.format(args.task_name.replace('/', ''), 
-                                                       str(args.train_num)[0]), index=False)
-    label_test.to_csv('./csv/ADNI_{0}{1}test.csv'.format(args.task_name.replace('/', ''),
-                                                           str(args.train_num)[0]), index=False)
-
     aurocMean_list = []
     for train_idx, valid_idx in skf.split(label_tv, label_tv[label_name]):
         n_iter += 1
@@ -165,7 +172,7 @@ if __name__ == "__main__":
         else: # config.task_type == 'reg': # ADNI
             loss = MSELoss()
 
-        model = yAwareCLModel(net, loss, loader_train, loader_val, loader_test, config, args.task_name, args.train_num, args.layer_control) # ADNI
+        model = yAwareCLModel(net, loss, loader_train, loader_val, loader_test, config, task_name, train_num, layer_control, n_iter, pretrained_path) # ADNI
         outGT, outPRED = model.fine_tuning() # ADNI
 
         if config.task_type == 'cls':

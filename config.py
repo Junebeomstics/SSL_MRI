@@ -62,6 +62,6 @@ class Config:
             self.label_name = 'Dx.new' # ADNI # `Dx.new` #####
             self.num_classes = 2 # ADNI - AD vs CN or MCI vs CN or AD vs MCI or reg #####
 
-            self.pretrained_path = './weights/DenseNet121_BHB-10K_yAwareContrastive.pth' # ADNI #####
+            #self.pretrained_path = './weights/BHByAa64c.pth' # ADNI #####
             #self.layer_control = 'tune_all' # ADNI # 'freeze' or 'tune_diff' (whether to freeze pretrained layers or not) #####
             self.patience = 20 # ADNI

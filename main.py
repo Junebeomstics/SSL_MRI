@@ -30,13 +30,15 @@ if __name__ == "__main__":
     print("[main.py started at {0}]".format(nowDatetime))
     start_time = time.time() # ADNI
     parser = argparse.ArgumentParser()
+    parser.add_argument("--pretrained_path", type=str, required=True, # ADNI
+                        help="Set the pretrained model path.")   
     parser.add_argument("--mode", type=str, choices=["pretraining", "finetuning"], required=True,
                         help="Set the training mode. Do not forget to configure config.py accordingly !")
     parser.add_argument("--train_num", type=int, required=True, # ADNI
                         help="Set the number of training samples.")                        
     parser.add_argument("--task_name", type=str, required=False, # ADNI
                         help="Set the name of the fine-tuning task. (e.g. AD/MCI)")
-    parser.add_argument("--layer_control", type=int, choices=['tune_all', 'freeze', 'tune_diff'], required=False, # ADNI
+    parser.add_argument("--layer_control", type=str, choices=['tune_all', 'freeze', 'tune_diff'], required=False, # ADNI
                         help="Set pretrained weight layer control option.")
     parser.add_argument("--stratify", type=str, choices=["strat", "balan"], required=False, # ADNI
                         help="Set training samples are stratified or balanced for fine-tuning task.")
@@ -46,7 +48,8 @@ if __name__ == "__main__":
     mode = PRETRAINING if args.mode == "pretraining" else FINE_TUNING
 
     config = Config(mode)
-    
+    pretrained_path = args.pretrained_path
+    print('Pretrained path:', pretrained_path)
     ### ADNI
     label_name = config.label_name # 'Dx.new'
     # Control randomness for reproduction
@@ -219,9 +222,9 @@ if __name__ == "__main__":
             loss = MSELoss()
 
     if config.mode == PRETRAINING:
-        model = yAwareCLModel(net, loss, loader_train, loader_val, loader_test, config, "no", 0, "no") # ADNI
+        model = yAwareCLModel(net, loss, loader_train, loader_val, loader_test, config, "no", 0, "no", None, pretrained_path) # ADNI
     else:
-        model = yAwareCLModel(net, loss, loader_train, loader_val, loader_test, config, args.task_name, args.train_num, args.layer_control) # ADNI
+        model = yAwareCLModel(net, loss, loader_train, loader_val, loader_test, config, args.task_name, args.train_num, args.layer_control, None, pretrained_path) # ADNI
 
     if config.mode == PRETRAINING:
         model.pretraining()

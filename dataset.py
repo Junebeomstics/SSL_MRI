@@ -10,7 +10,7 @@ from skimage.transform import resize
 
 class ADNI_Dataset(Dataset):
 
-    def __init__(self, config, labels, data_type, *args, **kwargs): # ADNI
+    def __init__(self, config, data_csv, data_type, *args, **kwargs): # ADNI
         super().__init__(*args, **kwargs)
         
         ### ADNI
@@ -36,8 +36,8 @@ class ADNI_Dataset(Dataset):
                                         probability=1)
         
         self.data_dir = './adni_t1s_baseline'
-        self.labels = labels
-        self.files = [x for x in os.listdir(self.data_dir) if x[4:12] in list(self.labels['SubjectID'])]
+        self.data_csv = data_csv
+        self.files = [x for x in os.listdir(self.data_dir) if x[4:12] in list(self.data_csv['SubjectID'])]
         ###
         
     def collate_fn(self, list_samples):
@@ -52,11 +52,11 @@ class ADNI_Dataset(Dataset):
         if self.config.mode == 0: # Pre-training # consider multiple labels (list)
             labels = []
             for label_nm in self.config.label_name: # ["PTAGE", "PTGENDER"]
-                labels.append(float(self.labels[label_nm].values[idx]))
+                labels.append(float(self.data_csv[label_nm].values[idx]))
             labels = tuple(labels)
         else: # Fine-tuning
-            labels = self.labels[self.config.label_name].values[idx]
-        SubjectID = self.labels['SubjectID'].values[idx]
+            labels = self.data_csv[self.config.label_name].values[idx]
+        SubjectID = self.data_csv['SubjectID'].values[idx]
         file_match = [file for file in self.files if SubjectID in file]
         path = os.path.join(self.data_dir, file_match[0])
         img = nib.load(os.path.join(path, 'brain_to_MNI_nonlin.nii.gz'))
@@ -79,4 +79,4 @@ class ADNI_Dataset(Dataset):
         return (x, labels)
 
     def __len__(self):
-        return len(self.labels)
+        return len(self.data_csv)
