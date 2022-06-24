@@ -13,3 +13,8 @@ The main contributions of our project are as follows:
 - we verify the contribution of several transformation methods to make positive samples in self supervised learning.
 - we compare the performances of famous baseline models such as Simclr, Moco, Model Genesis.
 - we develop new framework that can integrate the self-supervised learning process with multi-task learning
+
+## Pre-training 모드에 대한 구현 및 코드 실행은 `pretraining` 브랜치에서 확인하실 수 있습니다.
+## Fine-tuning 모드에 대한 구현 및 코드 실행은 `Finetuning` 브랜치에서 확인하실 수 있습니다.
+
+감사합니다.
