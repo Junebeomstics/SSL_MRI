@@ -8,8 +8,12 @@ import torch.nn.functional as func
 from sklearn.metrics.pairwise import rbf_kernel
 import numpy as np
 
+def XOR_kernel(a, b):
+    assert len(a) == len(b)
+    return np.array([[1 if i != j else 0 for i in a ] for j in b])
+
 class GeneralizedSupervisedNTXenLoss(nn.Module):
-    def __init__(self, kernel='rbf', temperature=0.1, return_logits=False, sigma=1.0):
+    def __init__(self, config, kernel='rbf', temperature=0.1, return_logits=False, sigma=1.0):
         """
         :param kernel: a callable function f: [K, *] x [K, *] -> [K, K]
                                               y1, y2          -> f(y1, y2)
@@ -22,10 +26,13 @@ class GeneralizedSupervisedNTXenLoss(nn.Module):
 
         # sigma = prior over the label's range
         super().__init__()
+        self.config = config
         self.kernel = kernel
         self.sigma = sigma
         if self.kernel == 'rbf':
             self.kernel = lambda y1, y2: rbf_kernel(y1, y2, gamma=1./(2*self.sigma**2))
+        elif self.kernel == 'XOR':
+            self.kernel = lambda y1, y2: XOR_kernel(y1, y2)
         else:
             assert hasattr(self.kernel, '__call__'), 'kernel must be a callable'
         self.temperature = temperature
