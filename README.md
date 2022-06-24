@@ -16,5 +16,5 @@ The main contributions of our project are as follows:
 
 Pre-training 모드 최종 코드 실행 예시는 아래와 같습니다. 각 arguement에 대한 설명은 `main.cv` 파일을 참고해주세요.
 ```bash
-python main.py --mode pretraining --framework yaware --ckpt_dir ./checkpoint_yaware
+python3 main.py --mode pretraining --framework yaware --ckpt_dir ./checkpoint_yaware
 ```
