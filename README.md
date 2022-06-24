@@ -1,6 +1,6 @@
 # SSL_MRI
 
-Team members: 권준범, 류명훈, 장원영, 채연 
+Team members: 권준범, 장원영, 채연 
 
 ## Introduction
 
@@ -14,8 +14,21 @@ The main contributions of our project are as follows:
 - we compare the performances of famous baseline models such as Simclr, Moco, Model Genesis.
 - we develop new framework that can integrate the self-supervised learning process with multi-task learning
 
+코드 실행 예시는 아래와 같습니다.
+```bash
+python3 main.py --pretrained_path DenseNet121_BHB-10K_yAwareContrastive.pth --mode pretraining --train_num 100 --random_seed 0
+python3 main.py --pretrained_path DenseNet121_BHB-10K_yAwareContrastive.pth --mode finetuning --train_num 100 --task_name PTAGE --layer_control tune_all --random_seed 0
+python3 main.py --pretrained_path DenseNet121_BHB-10K_yAwareContrastive.pth --mode finetuning --train_num 100 --task_name AD/CN --layer_control freeze --stratify balan --random_seed 0
+```
+
+```bash
+python3 main_cv.py --pretrained_path ./weights/DenseNet121_BHB-10K_yAwareContrastive.pth --train_num 100 --task_name AD/CN --layer_control tune_all --random_seed 0
+python3 main_cv.py --pretrained_path ./weights/DenseNet121_BHB-10K_yAwareContrastive.pth --train_num 300 --task_name AD/CN --layer_control freeze --random_seed 0
+```
 
 
+
+# 아래는 주차별 상세 진행 상황입니다.
 ## ADNI Dataset Adaptation (220513 commit `6b5f03d`) - wonyoung
 
 ADNI 데이터셋에 맞춘 Pretraining 모드 및 Finetuning 모드 코드를 추가했습니다.
@@ -300,4 +313,4 @@ python3 main_cv.py --train_num 300 --task_name AD/CN --layer_control freeze --ra
 - [x] Finetuning 모드 stratification 모드 버리기 (N, freeze 여부는 유지) (12 tasks)
 - [x] Finetuning 모드 task 별로 학습 및 평가 자동화하기
 - [x] Train set label 비율 1대1로 고정하고 5-fold stratified CV 실행하기 (각 N=100, N=300, N=500)
-- [ ] 다양한 Pretrained 모델로 5-fold stratified CV Leave-Site-Out 실험하기
+- [x] 다양한 Pretrained 모델로 5-fold stratified CV Leave-Site-Out 실험하기
