@@ -30,7 +30,7 @@ python3 main_cv.py --pretrained_path ./weights/DenseNet121_BHB-10K_yAwareContras
 
 
 
-# 아래는 주차별 상세 진행 상황입니다.
+### 아래는 주차별 상세 진행 상황입니다.
 ## ADNI Dataset Adaptation (220513 commit `6b5f03d`) - wonyoung
 
 ADNI 데이터셋에 맞춘 Pretraining 모드 및 Finetuning 모드 코드를 추가했습니다.
