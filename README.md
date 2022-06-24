@@ -15,7 +15,7 @@ The main contributions of our project are as follows:
 - we develop new framework that can integrate the self-supervised learning process with multi-task learning
 
 Fine-tuning 모드 최종 코드 실행 예시는 아래와 같습니다. 각 arguement에 대한 설명은 `main.cv` 파일을 참고해주세요.
-`weights` directory에 [여기](https://drive.google.com/file/d/1e75JYkaXvLQJhn0Km99iVTzB28AvErh5/view)에서 다운 받은 pretrained 모델을 넣으면 됩니다.  
+예시로 `weights` directory에 [여기](https://drive.google.com/file/d/1e75JYkaXvLQJhn0Km99iVTzB28AvErh5/view)에서 다운 받은 pretrained 모델을 넣으면 됩니다.  
 ```bash
 python3 main.py --pretrained_path ./weights/DenseNet121_BHB-10K_yAwareContrastive.pth --mode pretraining --train_num 100 --random_seed 0
 python3 main.py --pretrained_path ./weights/DenseNet121_BHB-10K_yAwareContrastive.pth --mode finetuning --train_num 100 --task_name PTAGE --layer_control tune_all --random_seed 0
