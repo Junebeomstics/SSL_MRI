@@ -147,6 +147,13 @@ class yAwareCLModel:
             n_iter = 'CV' + str(self.n_iter)
         else:
             n_iter = 'model'
+        
+        path = './ckpts/{0}/{1}'.format(self.task_name.replace('/', ''), 
+                                        str(self.pretrained_path).split('/')[-1].split('.')[0])
+        isExist = os.path.exists(path)
+        if not isExist:
+            os.makedirs(path)
+
         early_stopping = EarlyStopping(patience = self.config.patience, 
                                        path = './ckpts/{0}/{1}/{1}_{2}_{3}_{4}.pt'.format(self.task_name.replace('/', ''), 
                                                                                           str(self.pretrained_path).split('/')[-1].split('.')[0], 
