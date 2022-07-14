@@ -256,7 +256,8 @@ python3 main_cv.py --train_num 300 --task_name AD/CN --layer_control freeze --ra
 - [3:6] : Pretraining model type (**yA**ware **a**ge / **yA**ware **s**ex / **yA**ware **i**ntelligence GPS / **sim**clr)
 - [6:8] : Pretraining batch size (32 / 64)
 - [8] : Pretraining augmentation type (**a**ll_tf / **c**utout)
-
+- AUC +- std / ACC +- std (train end epoch mean)
+- 
 | **1. AD vs CN (N=100)** | FromScratch | BHByAa64c | UKBsim64c | UKByAa64c |
 | :---: | :---: | :---: | :---: | :---: |
 | (tune)   | 0.84 +- 0.02 / 0.76 +- 0.02 (51.2) | 0.84 +- 0.02 / 0.77 +- 0.03 (44.6) |  |  |
